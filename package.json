@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
+    "@nuxtjs/tailwindcss": "^6.12.0",
     "nuxt": "^3.12.1",
     "vue": "^3.4.27",
     "vue-router": "^4.3.3"
@@ -21,6 +22,8 @@
   "devDependencies": {
     "husky": "^9.0.11",
     "lint-staged": "^15.2.6",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.3",
     "vite-plugin-eslint2": "^4.4.0"
   },
   "lint-staged": {
