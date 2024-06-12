@@ -9,7 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix --ignore-pattern tailwind.config.ts",
+    "lint:fix": "eslint . --fix",
     "prepare": "husky"
   },
   "dependencies": {
