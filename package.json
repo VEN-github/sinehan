@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
@@ -18,6 +19,11 @@
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.6",
     "vite-plugin-eslint2": "^4.4.0"
+  },
+  "lint-staged": {
+    "*": "npm run lint:fix --"
   }
 }
