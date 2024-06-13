@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxtjs/tailwindcss', 'shadcn-nuxt', '@nuxt/fonts'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxtjs/tailwindcss',
+    'shadcn-nuxt',
+    '@nuxt/fonts',
+  ],
   eslint: {
     checker: true,
     config: {
@@ -47,6 +52,35 @@ export default defineNuxtConfig({
         },
         { name: 'msapplication-TileColor', content: '#0f0e17' },
         { name: 'theme-color', content: '#0f0e17' },
+        {
+          property: 'og:url',
+          content: 'https://sinehan.vercel.app/',
+        },
+        {
+          property: 'og:title',
+          content: 'Sinehan',
+        },
+        {
+          property: 'og:description',
+          content:
+            'Explore our app: your exclusive portal to movie magic, packed with ratings, reviews, and all the film info you crave. Elevate your movie experience!',
+        },
+        {
+          property: 'og:image',
+          content: '/og-image.jpg',
+        },
+        {
+          property: 'og:image:type',
+          content: 'image/jpeg',
+        },
+        {
+          name: 'twitter:card',
+          content: 'summary',
+        },
+        {
+          name: 'robots',
+          content: 'index, follow',
+        },
       ],
     },
   },
