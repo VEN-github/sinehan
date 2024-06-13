@@ -1,8 +1,9 @@
 <template>
-  <div class="grid h-screen place-items-center">
-    <Card class="bg-custom-foreground mx-auto max-w-sm">
+  <div class="grid h-screen place-content-center px-2 sm:px-0">
+    <AppLogo class="mx-auto mb-5" />
+    <Card class="mx-auto max-w-sm bg-custom-foreground">
       <CardHeader>
-        <CardTitle class="text-custom-bg text-xl">
+        <CardTitle class="text-xl text-custom-bg">
           Sign Up
         </CardTitle>
         <CardDescription class="text-custom-bg">
@@ -64,12 +65,12 @@
           </div>
           <Button
             type="submit"
-            class="bg-custom-primary text-custom-foreground hover:bg-custom-primary/80 w-full"
+            class="w-full bg-custom-primary text-custom-foreground hover:bg-custom-primary/80"
           >
             Create an account
           </Button>
         </div>
-        <div class="text-custom-bg mt-4 text-center text-sm">
+        <div class="mt-4 text-center text-sm text-custom-bg">
           Already have an account?
           <NuxtLink
             to="/login"
