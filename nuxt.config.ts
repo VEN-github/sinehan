@@ -6,11 +6,17 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@nuxt/fonts',
+    'nuxt-vuefire',
   ],
+  css: ['~/assets/css/animation.css'],
   eslint: {
     checker: true,
     config: {
-      stylistic: true,
+      stylistic: {
+        semi: false,
+        indent: 2,
+        quotes: 'single',
+      },
     },
   },
   app: {
@@ -82,6 +88,21 @@ export default defineNuxtConfig({
           content: 'index, follow',
         },
       ],
+    },
+  },
+  vuefire: {
+    auth: {
+      enabled: true,
+      sessionCookie: true,
+    },
+    config: {
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.FIREBASE_APP_ID,
+      measurementId: process.env.FIREBASE_MEASUREMENT_ID,
     },
   },
 })

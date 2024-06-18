@@ -11,65 +11,87 @@
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div class="grid gap-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="grid gap-2">
-              <Label
-                for="first-name"
-                class="text-custom-bg"
-              >First name</Label>
-              <Input
-                id="first-name"
-                placeholder="Max"
-                class="text-custom-bg"
-                required
-              />
-            </div>
-            <div class="grid gap-2">
-              <Label
-                for="last-name"
-                class="text-custom-bg"
-              >Last name</Label>
-              <Input
-                id="last-name"
-                placeholder="Robinson"
-                class="text-custom-bg"
-                required
-              />
-            </div>
-          </div>
-          <div class="grid gap-2">
-            <Label
-              for="email"
-              class="text-custom-bg"
-            >Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              class="text-custom-bg"
-              required
-            />
-          </div>
-          <div class="grid gap-2">
-            <Label
-              for="password"
-              class="text-custom-bg"
-              required
-            >Password</Label>
-            <Input
-              id="password"
-              type="password"
-              class="text-custom-bg"
-            />
-          </div>
-          <Button
-            type="submit"
-            class="w-full bg-custom-primary text-custom-foreground hover:bg-custom-primary/80"
+        <form @submit.prevent="createUser">
+          <Transition
+            name="fade"
+            mode="out-in"
           >
-            Create an account
-          </Button>
-        </div>
+            <Alert
+              v-if="errorMessage"
+              variant="destructive"
+              class="mb-4 border-0 bg-red-50"
+            >
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                {{ errorMessage }}
+              </AlertDescription>
+            </Alert>
+          </Transition>
+          <div class="grid gap-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="grid gap-2">
+                <Label
+                  for="first-name"
+                  class="text-custom-bg"
+                >First name</Label>
+                <Input
+                  id="first-name"
+                  v-model="models.firstName"
+                  placeholder="John"
+                  class="text-custom-bg"
+                  required
+                />
+              </div>
+              <div class="grid gap-2">
+                <Label
+                  for="last-name"
+                  class="text-custom-bg"
+                >Last name</Label>
+                <Input
+                  id="last-name"
+                  v-model="models.lastName"
+                  placeholder="Doe"
+                  class="text-custom-bg"
+                  required
+                />
+              </div>
+            </div>
+            <div class="grid gap-2">
+              <Label
+                for="email"
+                class="text-custom-bg"
+              >Email</Label>
+              <Input
+                id="email"
+                v-model="models.email"
+                type="email"
+                placeholder="m@example.com"
+                class="text-custom-bg"
+                required
+              />
+            </div>
+            <div class="grid gap-2">
+              <Label
+                for="password"
+                class="text-custom-bg"
+                required
+              >Password</Label>
+              <Input
+                id="password"
+                v-model="models.password"
+                type="password"
+                class="text-custom-bg"
+                required
+              />
+            </div>
+            <Button
+              type="submit"
+              class="w-full bg-custom-primary text-custom-foreground hover:bg-custom-primary/80"
+            >
+              Create an account
+            </Button>
+          </div>
+        </form>
         <div class="mt-4 text-center text-sm text-custom-bg">
           Already have an account?
           <NuxtLink
@@ -83,3 +105,42 @@
     </Card>
   </div>
 </template>
+
+<script setup lang="ts">
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+
+const auth = useFirebaseAuth()
+const models = reactive({
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+})
+const errorMessage = ref<string | null>(null)
+let timeout: ReturnType<typeof setTimeout>
+
+async function createUser() {
+  clearTimeout(timeout)
+  errorMessage.value = null
+  createUserWithEmailAndPassword(auth, models.email, models.password)
+    .then((userCredential) => {
+      // Signed up
+      const user = userCredential.user
+      updateProfile(user, {
+        displayName: `${models.firstName} ${models.lastName}`,
+      })
+    })
+    .catch((error) => {
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage.value = 'Email already exists.'
+      }
+      else if (error.code === 'auth/weak-password') {
+        errorMessage.value = 'Password should be at least 6 characters.'
+      }
+
+      timeout = setTimeout(() => {
+        errorMessage.value = null
+      }, 3000)
+    })
+}
+</script>
