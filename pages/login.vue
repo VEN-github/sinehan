@@ -23,7 +23,7 @@
               <Label for="email" class="text-custom-bg">Email</Label>
               <Input
                 id="email"
-                v-model="models.email"
+                v-model.trim="models.email"
                 type="email"
                 placeholder="m@example.com"
                 class="text-custom-bg"
@@ -48,8 +48,10 @@
             <Button
               type="submit"
               class="w-full bg-custom-primary text-custom-foreground hover:bg-custom-primary/80"
+              :disabled="isLoading"
             >
-              Login
+              <IconLoaderCircle v-if="isLoading" class="mr-1.5 animate-spin" :size="18" />
+              {{ isLoading ? 'Logging in...' : 'Login' }}
             </Button>
           </div>
         </form>
@@ -66,22 +68,25 @@
 import { signInWithEmailAndPassword, type Auth } from 'firebase/auth'
 
 const auth = useFirebaseAuth() as Auth
+const router = useRouter()
 const models = reactive({
   email: '',
   password: ''
 })
+const isLoading = ref<boolean>(false)
 const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
 
 async function login() {
+  isLoading.value = true
   clearTimeout(timeout)
   errorMessage.value = null
   signInWithEmailAndPassword(auth, models.email, models.password)
-    .then((userCredential) => {
-      const user = userCredential.user
-      console.log(user)
+    .then(() => {
+      router.go(0)
     })
     .catch((error) => {
+      isLoading.value = false
       if (error.code === 'auth/invalid-credential') {
         errorMessage.value = 'Email or password is incorrect.'
       } else if (error.code === 'auth/user-not-found') {

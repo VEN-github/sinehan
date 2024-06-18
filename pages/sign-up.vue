@@ -24,7 +24,7 @@
                 <Label for="first-name" class="text-custom-bg">First name</Label>
                 <Input
                   id="first-name"
-                  v-model="models.firstName"
+                  v-model.trim="models.firstName"
                   placeholder="John"
                   class="text-custom-bg"
                   required
@@ -34,7 +34,7 @@
                 <Label for="last-name" class="text-custom-bg">Last name</Label>
                 <Input
                   id="last-name"
-                  v-model="models.lastName"
+                  v-model.trim="models.lastName"
                   placeholder="Doe"
                   class="text-custom-bg"
                   required
@@ -45,7 +45,7 @@
               <Label for="email" class="text-custom-bg">Email</Label>
               <Input
                 id="email"
-                v-model="models.email"
+                v-model.trim="models.email"
                 type="email"
                 placeholder="m@example.com"
                 class="text-custom-bg"
@@ -65,8 +65,10 @@
             <Button
               type="submit"
               class="w-full bg-custom-primary text-custom-foreground hover:bg-custom-primary/80"
+              :disabled="isLoading"
             >
-              Create an account
+              <IconLoaderCircle v-if="isLoading" class="mr-1.5 animate-spin" :size="18" />
+              {{ isLoading ? 'Creating...' : 'Create account' }}
             </Button>
           </div>
         </form>
@@ -83,16 +85,19 @@
 import { createUserWithEmailAndPassword, updateProfile, type Auth } from 'firebase/auth'
 
 const auth = useFirebaseAuth() as Auth
+const router = useRouter()
 const models = reactive({
   firstName: '',
   lastName: '',
   email: '',
   password: ''
 })
+const isLoading = ref<boolean>(false)
 const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
 
 async function createUser() {
+  isLoading.value = true
   clearTimeout(timeout)
   errorMessage.value = null
   createUserWithEmailAndPassword(auth, models.email, models.password)
@@ -101,8 +106,10 @@ async function createUser() {
       updateProfile(user, {
         displayName: `${models.firstName} ${models.lastName}`
       })
+      router.go(0)
     })
     .catch((error) => {
+      isLoading.value = false
       if (error.code === 'auth/email-already-in-use') {
         errorMessage.value = 'Email already exists.'
       } else if (error.code === 'auth/weak-password') {
