@@ -97,7 +97,6 @@ async function createUser() {
   errorMessage.value = null
   createUserWithEmailAndPassword(auth, models.email, models.password)
     .then((userCredential) => {
-      // Signed up
       const user = userCredential.user
       updateProfile(user, {
         displayName: `${models.firstName} ${models.lastName}`
@@ -108,6 +107,8 @@ async function createUser() {
         errorMessage.value = 'Email already exists.'
       } else if (error.code === 'auth/weak-password') {
         errorMessage.value = 'Password should be at least 6 characters.'
+      } else {
+        errorMessage.value = error.message
       }
 
       timeout = setTimeout(() => {
