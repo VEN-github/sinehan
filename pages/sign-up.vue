@@ -3,24 +3,15 @@
     <AppLogo class="mx-auto mb-5" />
     <Card class="mx-auto max-w-sm bg-custom-foreground">
       <CardHeader>
-        <CardTitle class="text-xl text-custom-bg">
-          Sign Up
-        </CardTitle>
+        <CardTitle class="text-xl text-custom-bg"> Sign Up </CardTitle>
         <CardDescription class="text-custom-bg">
           Enter your information to create an account
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form @submit.prevent="createUser">
-          <Transition
-            name="fade"
-            mode="out-in"
-          >
-            <Alert
-              v-if="errorMessage"
-              variant="destructive"
-              class="mb-4 border-0 bg-red-50"
-            >
+          <Transition name="fade" mode="out-in">
+            <Alert v-if="errorMessage" variant="destructive" class="mb-4 border-0 bg-red-50">
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>
                 {{ errorMessage }}
@@ -30,10 +21,7 @@
           <div class="grid gap-4">
             <div class="grid grid-cols-2 gap-4">
               <div class="grid gap-2">
-                <Label
-                  for="first-name"
-                  class="text-custom-bg"
-                >First name</Label>
+                <Label for="first-name" class="text-custom-bg">First name</Label>
                 <Input
                   id="first-name"
                   v-model="models.firstName"
@@ -43,10 +31,7 @@
                 />
               </div>
               <div class="grid gap-2">
-                <Label
-                  for="last-name"
-                  class="text-custom-bg"
-                >Last name</Label>
+                <Label for="last-name" class="text-custom-bg">Last name</Label>
                 <Input
                   id="last-name"
                   v-model="models.lastName"
@@ -57,10 +42,7 @@
               </div>
             </div>
             <div class="grid gap-2">
-              <Label
-                for="email"
-                class="text-custom-bg"
-              >Email</Label>
+              <Label for="email" class="text-custom-bg">Email</Label>
               <Input
                 id="email"
                 v-model="models.email"
@@ -71,11 +53,7 @@
               />
             </div>
             <div class="grid gap-2">
-              <Label
-                for="password"
-                class="text-custom-bg"
-                required
-              >Password</Label>
+              <Label for="password" class="text-custom-bg" required>Password</Label>
               <Input
                 id="password"
                 v-model="models.password"
@@ -94,12 +72,7 @@
         </form>
         <div class="mt-4 text-center text-sm text-custom-bg">
           Already have an account?
-          <NuxtLink
-            to="/login"
-            class="underline"
-          >
-            Sign in
-          </NuxtLink>
+          <NuxtLink to="/login" class="underline"> Sign in </NuxtLink>
         </div>
       </CardContent>
     </Card>
@@ -107,14 +80,14 @@
 </template>
 
 <script setup lang="ts">
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile, type Auth } from 'firebase/auth'
 
-const auth = useFirebaseAuth()
+const auth = useFirebaseAuth() as Auth
 const models = reactive({
   firstName: '',
   lastName: '',
   email: '',
-  password: '',
+  password: ''
 })
 const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
@@ -127,14 +100,13 @@ async function createUser() {
       // Signed up
       const user = userCredential.user
       updateProfile(user, {
-        displayName: `${models.firstName} ${models.lastName}`,
+        displayName: `${models.firstName} ${models.lastName}`
       })
     })
     .catch((error) => {
       if (error.code === 'auth/email-already-in-use') {
         errorMessage.value = 'Email already exists.'
-      }
-      else if (error.code === 'auth/weak-password') {
+      } else if (error.code === 'auth/weak-password') {
         errorMessage.value = 'Password should be at least 6 characters.'
       }
 
