@@ -65,6 +65,7 @@
 </template>
 
 <script setup lang="ts">
+import { FirebaseError } from 'firebase/app'
 import { signInWithEmailAndPassword, type Auth } from 'firebase/auth'
 
 const auth = useFirebaseAuth() as Auth
@@ -78,15 +79,15 @@ const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
 
 async function login() {
-  isLoading.value = true
-  clearTimeout(timeout)
-  errorMessage.value = null
-  signInWithEmailAndPassword(auth, models.email, models.password)
-    .then(() => {
-      router.go(0)
-    })
-    .catch((error) => {
-      isLoading.value = false
+  try {
+    isLoading.value = true
+    clearTimeout(timeout)
+    errorMessage.value = null
+    await signInWithEmailAndPassword(auth, models.email, models.password)
+    router.go(0)
+  } catch (error) {
+    isLoading.value = false
+    if (error instanceof FirebaseError) {
       if (error.code === 'auth/invalid-credential') {
         errorMessage.value = 'Email or password is incorrect.'
       } else if (error.code === 'auth/user-not-found') {
@@ -94,6 +95,7 @@ async function login() {
       } else {
         errorMessage.value = error.message
       }
-    })
+    }
+  }
 }
 </script>

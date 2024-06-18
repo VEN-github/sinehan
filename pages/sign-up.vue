@@ -82,6 +82,7 @@
 </template>
 
 <script setup lang="ts">
+import { FirebaseError } from 'firebase/app'
 import { createUserWithEmailAndPassword, updateProfile, type Auth } from 'firebase/auth'
 
 const auth = useFirebaseAuth() as Auth
@@ -97,19 +98,19 @@ const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
 
 async function createUser() {
-  isLoading.value = true
-  clearTimeout(timeout)
-  errorMessage.value = null
-  createUserWithEmailAndPassword(auth, models.email, models.password)
-    .then((userCredential) => {
-      const user = userCredential.user
-      updateProfile(user, {
-        displayName: `${models.firstName} ${models.lastName}`
-      })
-      router.go(0)
+  try {
+    isLoading.value = true
+    clearTimeout(timeout)
+    errorMessage.value = null
+    const userCredential = await createUserWithEmailAndPassword(auth, models.email, models.password)
+    const user = userCredential.user
+    updateProfile(user, {
+      displayName: `${models.firstName} ${models.lastName}`
     })
-    .catch((error) => {
-      isLoading.value = false
+    router.go(0)
+  } catch (error) {
+    isLoading.value = false
+    if (error instanceof FirebaseError) {
       if (error.code === 'auth/email-already-in-use') {
         errorMessage.value = 'Email already exists.'
       } else if (error.code === 'auth/weak-password') {
@@ -121,6 +122,7 @@ async function createUser() {
       timeout = setTimeout(() => {
         errorMessage.value = null
       }, 3000)
-    })
+    }
+  }
 }
 </script>
