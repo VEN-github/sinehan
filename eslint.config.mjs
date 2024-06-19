@@ -34,7 +34,8 @@ export default withNuxt(
           math: 'always'
         }
       ],
-      'vue/singleline-html-element-content-newline': 'off'
+      'vue/singleline-html-element-content-newline': 'off',
+      'vue/no-multiple-template-root': 'off'
     }
   }
 )

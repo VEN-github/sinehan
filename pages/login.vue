@@ -81,6 +81,10 @@
 import { FirebaseError } from 'firebase/app'
 import { signInWithEmailAndPassword, type Auth } from 'firebase/auth'
 
+definePageMeta({
+  layout: false
+})
+
 const auth = useFirebaseAuth() as Auth
 const router = useRouter()
 const models = reactive({
