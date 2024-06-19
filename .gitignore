@@ -18,6 +18,7 @@ logs
 .fleet
 .idea
 .eslintcache
+service-account.json
 
 # Local env files
 .env
