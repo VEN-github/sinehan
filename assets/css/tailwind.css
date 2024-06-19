@@ -81,4 +81,72 @@
   .custom-bg-img {
     background-image: url('~/assets/images/auth-bg.webp');
   }
+
+  .hamburger {
+    @apply relative z-20 m-0 inline-block cursor-pointer overflow-visible border-0 bg-transparent transition-all;
+  }
+
+  .hamburger:hover {
+    @apply opacity-70;
+  }
+
+  .hamburger.is-active:hover {
+    @apply opacity-70;
+  }
+
+  .hamburger.is-active .hamburger-inner,
+  .hamburger.is-active .hamburger-inner::before,
+  .hamburger.is-active .hamburger-inner::after {
+    @apply bg-custom-foreground;
+  }
+
+  .hamburger-box {
+    @apply relative inline-block h-3.5 w-[25px];
+  }
+
+  .hamburger--slider.is-active .hamburger-box {
+    @apply h-4;
+  }
+
+  .hamburger-inner {
+    @apply top-2/4 -mt-[2px] block;
+  }
+
+  .hamburger-inner,
+  .hamburger-inner::before,
+  .hamburger-inner::after {
+    @apply absolute h-[2px] w-[25px] rounded bg-custom-foreground transition-transform;
+  }
+
+  .hamburger-inner::before,
+  .hamburger-inner::after {
+    @apply block content-[''];
+  }
+
+  .hamburger-inner::before {
+    @apply -top-[10px];
+  }
+
+  .hamburger-inner::after {
+    @apply -bottom-[10px];
+  }
+
+  .hamburger--slider .hamburger-inner {
+    @apply top-[2px] before:top-[8px] before:transition-all after:top-4;
+  }
+
+  .hamburger--slider.is-active .hamburger-inner {
+    transform: translate3d(0, 10px, 0) rotate(45deg);
+  }
+
+  .hamburger--slider.is-active .hamburger-inner::before {
+    top: 10px;
+    transform: rotate(-45deg) translate3d(-5.71429px, -6px, 0);
+    opacity: 0;
+  }
+
+  .hamburger--slider.is-active .hamburger-inner::after {
+    top: 20px;
+    transform: translate3d(0, -20px, 0) rotate(-90deg);
+  }
 }

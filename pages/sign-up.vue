@@ -118,6 +118,10 @@
 import { FirebaseError } from 'firebase/app'
 import { createUserWithEmailAndPassword, updateProfile, type Auth } from 'firebase/auth'
 
+definePageMeta({
+  layout: false
+})
+
 const auth = useFirebaseAuth() as Auth
 const router = useRouter()
 const models = reactive({
@@ -134,8 +138,8 @@ const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
 
 async function createUser() {
+  isLoading.value = true
   try {
-    isLoading.value = true
     clearTimeout(timeout)
     errorMessage.value = null
 
@@ -150,7 +154,6 @@ async function createUser() {
     })
     router.go(0)
   } catch (error) {
-    isLoading.value = false
     errorMessage.value = 'An unknown error occurred.'
 
     if (error instanceof FirebaseError) {
@@ -166,6 +169,8 @@ async function createUser() {
     }
 
     clearErrorMessage()
+  } finally {
+    isLoading.value = false
   }
 }
 
