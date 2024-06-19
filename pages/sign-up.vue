@@ -54,13 +54,43 @@
             </div>
             <div class="grid gap-2">
               <Label for="password" class="text-custom-bg" required>Password</Label>
-              <Input
-                id="password"
-                v-model="models.password"
-                type="password"
-                class="text-custom-bg"
-                required
-              />
+              <div class="relative w-full">
+                <Input
+                  id="password"
+                  v-model="models.password"
+                  :type="showPassword ? 'text' : 'password'"
+                  class="pr-10 text-custom-bg"
+                  required
+                />
+                <span
+                  role="button"
+                  class="absolute inset-y-0 end-0 flex items-center justify-center px-3"
+                  @click="showPassword = !showPassword"
+                >
+                  <IconEyeOff v-if="!showPassword" class="size-4 text-muted-foreground" />
+                  <IconEye v-else class="size-4 text-muted-foreground" />
+                </span>
+              </div>
+            </div>
+            <div class="grid gap-2">
+              <Label for="confirm-password" class="text-custom-bg" required>Confirm Password</Label>
+              <div class="relative w-full">
+                <Input
+                  id="confirm-password"
+                  v-model="models.confirmPassword"
+                  :type="showConfirmPassword ? 'text' : 'password'"
+                  class="pr-10 text-custom-bg"
+                  required
+                />
+                <span
+                  role="button"
+                  class="absolute inset-y-0 end-0 flex items-center justify-center px-3"
+                  @click="showConfirmPassword = !showConfirmPassword"
+                >
+                  <IconEyeOff v-if="!showConfirmPassword" class="size-4 text-muted-foreground" />
+                  <IconEye v-else class="size-4 text-muted-foreground" />
+                </span>
+              </div>
             </div>
             <Button
               type="submit"
@@ -91,8 +121,11 @@ const models = reactive({
   firstName: '',
   lastName: '',
   email: '',
-  password: ''
+  password: '',
+  confirmPassword: ''
 })
+const showPassword = ref<boolean>(false)
+const showConfirmPassword = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
@@ -102,6 +135,11 @@ async function createUser() {
     isLoading.value = true
     clearTimeout(timeout)
     errorMessage.value = null
+
+    if (models.password !== models.confirmPassword) {
+      throw new Error('Password does not match.')
+    }
+
     const userCredential = await createUserWithEmailAndPassword(auth, models.email, models.password)
     const user = userCredential.user
     updateProfile(user, {
@@ -110,6 +148,8 @@ async function createUser() {
     router.go(0)
   } catch (error) {
     isLoading.value = false
+    errorMessage.value = 'An unknown error occurred.'
+
     if (error instanceof FirebaseError) {
       if (error.code === 'auth/email-already-in-use') {
         errorMessage.value = 'Email already exists.'
@@ -118,11 +158,17 @@ async function createUser() {
       } else {
         errorMessage.value = error.message
       }
-
-      timeout = setTimeout(() => {
-        errorMessage.value = null
-      }, 3000)
+    } else if (error instanceof Error) {
+      errorMessage.value = error.message
     }
+
+    clearErrorMessage()
   }
+}
+
+function clearErrorMessage() {
+  timeout = setTimeout(() => {
+    errorMessage.value = null
+  }, 3000)
 }
 </script>

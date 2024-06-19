@@ -37,13 +37,23 @@
                   Forgot your password?
                 </a>
               </div>
-              <Input
-                id="password"
-                v-model="models.password"
-                type="password"
-                class="text-custom-bg"
-                required
-              />
+              <div class="relative w-full">
+                <Input
+                  id="password"
+                  v-model="models.password"
+                  :type="showPassword ? 'text' : 'password'"
+                  class="pr-10 text-custom-bg"
+                  required
+                />
+                <span
+                  role="button"
+                  class="absolute inset-y-0 end-0 flex items-center justify-center px-3"
+                  @click="showPassword = !showPassword"
+                >
+                  <IconEyeOff v-if="!showPassword" class="size-4 text-muted-foreground" />
+                  <IconEye v-else class="size-4 text-muted-foreground" />
+                </span>
+              </div>
             </div>
             <Button
               type="submit"
@@ -74,6 +84,7 @@ const models = reactive({
   email: '',
   password: ''
 })
+const showPassword = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
@@ -87,6 +98,8 @@ async function login() {
     router.go(0)
   } catch (error) {
     isLoading.value = false
+    errorMessage.value = 'An unknown error occurred.'
+
     if (error instanceof FirebaseError) {
       if (error.code === 'auth/invalid-credential') {
         errorMessage.value = 'Email or password is incorrect.'
@@ -95,7 +108,17 @@ async function login() {
       } else {
         errorMessage.value = error.message
       }
+    } else if (error instanceof Error) {
+      errorMessage.value = error.message
     }
+
+    clearErrorMessage()
   }
+}
+
+function clearErrorMessage() {
+  timeout = setTimeout(() => {
+    errorMessage.value = null
+  }, 3000)
 }
 </script>
