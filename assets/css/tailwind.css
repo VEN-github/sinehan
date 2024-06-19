@@ -76,3 +76,9 @@
     @apply bg-custom-bg text-custom-foreground;
   }
 }
+
+@layer components {
+  .custom-bg-img {
+    background-image: url('~/assets/images/auth-bg.webp');
+  }
+}

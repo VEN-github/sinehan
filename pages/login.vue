@@ -1,7 +1,10 @@
 <template>
-  <div class="grid h-screen place-content-center px-2 sm:px-0">
-    <AppLogo class="mx-auto mb-5" />
-    <Card class="mx-auto max-w-sm bg-custom-foreground">
+  <div
+    class="custom-bg-img grid h-screen place-content-center bg-contain bg-fixed bg-center px-2 sm:px-0"
+  >
+    <div class="absolute inset-0 w-full bg-custom-bg/85"></div>
+    <AppLogo class="z-10 mx-auto mb-5" />
+    <Card class="z-10 mx-auto max-w-sm bg-custom-foreground">
       <CardHeader>
         <CardTitle class="text-2xl text-custom-bg"> Login </CardTitle>
         <CardDescription class="text-custom-bg">
@@ -33,9 +36,9 @@
             <div class="grid gap-2">
               <div class="flex items-center">
                 <Label for="password" class="text-custom-bg">Password</Label>
-                <a href="#" class="ml-auto inline-block text-sm text-custom-bg underline">
-                  Forgot your password?
-                </a>
+                <!-- <a href="#" class="ml-auto inline-block text-sm text-custom-bg underline">
+                  Forgot password?
+                </a> -->
               </div>
               <div class="relative w-full">
                 <Input

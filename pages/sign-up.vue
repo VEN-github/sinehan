@@ -1,7 +1,10 @@
 <template>
-  <div class="grid h-screen place-content-center px-2 sm:px-0">
-    <AppLogo class="mx-auto mb-5" />
-    <Card class="mx-auto max-w-sm bg-custom-foreground">
+  <div
+    class="custom-bg-img relative grid place-content-center bg-contain bg-fixed bg-center px-2 py-12 xs:h-screen xs:py-0 sm:px-0"
+  >
+    <div class="absolute inset-0 w-full bg-custom-bg/85"></div>
+    <AppLogo class="z-10 mx-auto mb-5" />
+    <Card class="z-10 mx-auto max-w-sm bg-custom-foreground">
       <CardHeader>
         <CardTitle class="text-xl text-custom-bg"> Sign Up </CardTitle>
         <CardDescription class="text-custom-bg">

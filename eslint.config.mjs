@@ -22,6 +22,18 @@ export default withNuxt(
           reset: true
         }
       ],
+      'vue/html-self-closing': [
+        'error',
+        {
+          html: {
+            void: 'any',
+            normal: 'any',
+            component: 'any'
+          },
+          svg: 'always',
+          math: 'always'
+        }
+      ],
       'vue/singleline-html-element-content-newline': 'off'
     }
   }
