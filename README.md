@@ -6,6 +6,7 @@ Embark on a cinematic journey with our app: your exclusive portal to movie magic
 
 - [Nuxt 3](https://nuxt.com/)
 - [shadcn-vue](https://www.shadcn-vue.com/)
+- [VueFire](https://vuefire.vuejs.org/)
 - [Firebase](https://firebase.google.com/)
 
 ## Project Setup

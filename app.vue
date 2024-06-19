@@ -5,4 +5,5 @@
       <AppFooter />
     </NuxtLayout>
   </div>
+  <Toaster />
 </template>

@@ -97,14 +97,13 @@ const errorMessage = ref<string | null>(null)
 let timeout: ReturnType<typeof setTimeout>
 
 async function login() {
+  isLoading.value = true
   try {
-    isLoading.value = true
     clearTimeout(timeout)
     errorMessage.value = null
     await signInWithEmailAndPassword(auth, models.email, models.password)
     router.go(0)
   } catch (error) {
-    isLoading.value = false
     errorMessage.value = 'An unknown error occurred.'
 
     if (error instanceof FirebaseError) {
@@ -120,6 +119,8 @@ async function login() {
     }
 
     clearErrorMessage()
+  } finally {
+    isLoading.value = false
   }
 }
 
