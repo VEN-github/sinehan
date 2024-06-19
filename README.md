@@ -1,75 +1,57 @@
-# Nuxt 3 Minimal Starter
+# SINEHAN
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Embark on a cinematic journey with our app: your exclusive portal to movie magic, packed with ratings, reviews, and all the film info you crave. Elevate your movie experience today!
 
-## Setup
+## Tech Stack
 
-Make sure to install the dependencies:
+- [Nuxt 3](https://nuxt.com/)
+- [shadcn-vue](https://www.shadcn-vue.com/)
+- [Firebase](https://firebase.google.com/)
+
+## Project Setup
+
+### Clone the project
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+git clone https://github.com/VEN-github/sinehan.git
 ```
 
-## Development Server
+### Go to the project directory
+
+```bash
+cd sinehan
+```
+
+### Copy the `.env.example` and named it `.env`.
+
+> This contains the environment variables such as **API Endpoint**, **API Key**, and **API Access Token** from [Firebase](https://firebase.google.com/) & [TMDB](https://www.themoviedb.org/).
+
+```terminal
+cp .env.example .env
+```
+
+### Install dependencies
+
+```sh
+npm install
+```
+
+### Compile and Hot-Reload for Development
 
 Start the development server on `http://localhost:3000`:
 
-```bash
-# npm
+```sh
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+### Type-Check, Compile and Minify for Production
 
-Build the application for production:
-
-```bash
-# npm
+```sh
 npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+### Lint with [ESLint](https://eslint.org/)
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+```sh
+npm run lint
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
