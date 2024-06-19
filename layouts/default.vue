@@ -24,6 +24,7 @@
     </BaseContainer>
   </header>
   <slot />
+  <AppFooter />
 </template>
 
 <script setup lang="ts">
