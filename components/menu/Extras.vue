@@ -4,8 +4,8 @@
       <IconSearch :size="20" stroke-width="1.5" />
       <p class="hidden md:block">Search</p>
     </button>
-    <ClientOnly>
-      <Separator orientation="vertical" class="hidden !h-5 lg:block" />
+    <Separator orientation="vertical" class="hidden !h-5 lg:block" />
+    <ClientOnly fallback-tag="span" fallback="Loading...">
       <BaseAvatar />
     </ClientOnly>
     <MenuButton @toggle-menu="emit('toggleMenu')" />
