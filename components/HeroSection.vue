@@ -18,7 +18,7 @@
           <p class="flex items-center gap-x-3 text-sm sm:text-base">
             <span>{{ releaseDate }}</span>
             <Separator orientation="vertical" class="!h-4" />
-            <!-- <span :title="genres">{{ formmattedGenreNames }}</span> -->
+            <span :title="genreNamesString">{{ genres }}</span>
             <span
               v-if="rating"
               class="rounded bg-custom-primary px-2 text-base font-medium sm:text-lg"
@@ -54,35 +54,16 @@ const props = defineProps({
   media: {
     type: Object as PropType<Movie | TV>,
     required: true
+  },
+  genres: {
+    type: Object,
+    required: true
   }
 })
 
 // const slug = useSlug(props.media)
 const title = useTitle(props.media)
 const releaseDate = useReleaseDate(props.media)
+const { genres, genreNamesString } = useGenres(props.media, props.genres.movie, props.genres.tv)
 const rating = useRating(props.media)
-
-// const genres = computed<string>(() => {
-//   let genreNames: (string | undefined)[] = []
-
-//   if ('release_date' in props.media && props.media.genre_ids?.length) {
-//     genreNames = props.media.genre_ids.map(
-//       (id) => movieStore.genres.find((genre) => genre.id === id)?.name
-//     )
-//   }
-
-//   if ('first_air_date' in props.media && props.media.genre_ids?.length) {
-//     genreNames = props.media.genre_ids.map(
-//       (id) => tvStore.genres.find((genre) => genre.id === id)?.name
-//     )
-//   }
-
-//   return genreNames?.join(', ') || ''
-// })
-
-// const formmattedGenreNames = computed<string>(() => {
-//   return genres.value.split(',').length > 2
-//     ? genres.value.split(',').slice(0, 2).concat(['...']).join(', ')
-//     : genres.value
-// })
 </script>

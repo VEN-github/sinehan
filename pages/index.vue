@@ -6,7 +6,7 @@
           v-for="(result, index) in trending?.results"
           :key="index + 'e' + result.id"
         >
-          <HeroSection :media="result" />
+          <HeroSection :media="result" :genres="genres" />
           <div class="dots-container"></div>
         </BaseCarouselSlide>
       </BaseCarousel>
@@ -21,10 +21,18 @@
 
 <script setup lang="ts">
 import type { APIResponse } from '~/types/api'
-import type { Movie, TV } from '~/types/media'
+import type { Movie, TV, Genre } from '~/types/media'
 import type { BaseCarousel } from '#build/components'
 
-const { data: trending } = await useFetch<APIResponse<(Movie | TV)[]>>('/api/trending')
+const { data } = useAsyncData(async () => {
+  const data = await Promise.all([
+    $fetch<APIResponse<(Movie | TV)[]>>('/api/trending'),
+    $fetch<{ genres: Genre[] }>('/api/genres/movie'),
+    $fetch<{ genres: Genre[] }>('/api/genres/tv')
+  ])
+
+  return { trending: data[0], movie_genres: data[1].genres, tv_genres: data[2].genres }
+})
 
 const carouselEl = ref<InstanceType<typeof BaseCarousel> | null>(null)
 const options = reactive({
@@ -43,6 +51,17 @@ const options = reactive({
   Autoplay: {
     timeout: 3000,
     showProgress: false
+  }
+})
+
+const trending = computed(() => {
+  return data.value?.trending
+})
+
+const genres = computed(() => {
+  return {
+    movie: data.value?.movie_genres,
+    tv: data.value?.tv_genres
   }
 })
 
