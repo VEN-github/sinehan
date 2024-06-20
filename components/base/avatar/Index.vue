@@ -1,8 +1,8 @@
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger>
-      <div class="flex items-center gap-2">
-        {{ user?.displayName }}<IconChevronDown class="size-5" />
+      <div v-if="displayName" class="flex items-center gap-2">
+        {{ displayName }}<IconChevronDown class="size-5" />
       </div>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
@@ -22,6 +22,11 @@ const auth = useFirebaseAuth() as Auth
 const user = useCurrentUser()
 const router = useRouter()
 const { toast } = useToast()
+const displayName = ref<string | null>(null)
+
+onMounted(() => {
+  displayName.value = user.value?.displayName || null
+})
 
 async function logout() {
   try {

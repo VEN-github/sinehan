@@ -104,6 +104,7 @@ async function login() {
     await signInWithEmailAndPassword(auth, models.email, models.password)
     router.go(0)
   } catch (error) {
+    isLoading.value = false
     errorMessage.value = 'An unknown error occurred.'
 
     if (error instanceof FirebaseError) {
@@ -119,8 +120,6 @@ async function login() {
     }
 
     clearErrorMessage()
-  } finally {
-    isLoading.value = false
   }
 }
 

@@ -154,6 +154,7 @@ async function createUser() {
     })
     router.go(0)
   } catch (error) {
+    isLoading.value = false
     errorMessage.value = 'An unknown error occurred.'
 
     if (error instanceof FirebaseError) {
@@ -169,8 +170,6 @@ async function createUser() {
     }
 
     clearErrorMessage()
-  } finally {
-    isLoading.value = false
   }
 }
 
