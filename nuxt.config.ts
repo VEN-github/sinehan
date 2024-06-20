@@ -7,7 +7,8 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@nuxt/fonts',
     'nuxt-vuefire',
-    'nuxt-lucide-icons'
+    'nuxt-lucide-icons',
+    'dayjs-nuxt'
   ],
   css: ['~/assets/css/animation.css'],
   eslint: {
