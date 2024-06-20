@@ -106,6 +106,12 @@ export default defineNuxtConfig({
       measurementId: process.env.FIREBASE_MEASUREMENT_ID
     }
   },
+  runtimeConfig: {
+    tmdbApiKey: process.env.TMDB_API_KEY,
+    public: {
+      tmdbPublicApiUrl: process.env.TMDB_PUBLIC_API_URL
+    }
+  },
   lucide: {
     namePrefix: 'Icon'
   }
