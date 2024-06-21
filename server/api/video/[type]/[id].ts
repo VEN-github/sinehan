@@ -4,9 +4,12 @@ import type { Video } from '~/types/media'
 
 export default defineEventHandler(async (event) => {
   const config = useTMDBConfig()
-  const slug = event.context.params?.slug
+  const { type, id } = event.context.params as Record<string, string>
 
-  const response = await $fetch<APIResponse<Video[]>>(`/${slug}/videos?language=en-US`, config)
+  const response = await $fetch<APIResponse<Video[]>>(
+    `/${type}/${id}/videos?language=en-US`,
+    config
+  )
 
   return response
 })
