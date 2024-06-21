@@ -2,10 +2,7 @@
   <section>
     <ClientOnly fallback-tag="div">
       <BaseCarousel ref="carouselEl" :options="options" autoplay>
-        <BaseCarouselSlide
-          v-for="(result, index) in trending?.results"
-          :key="index + 'e' + result.id"
-        >
+        <BaseCarouselSlide v-for="(result, index) in trending" :key="index + 'e' + result.id">
           <HeroSection :media="result" :genres="genres" />
           <div class="dots-container"></div>
         </BaseCarouselSlide>
@@ -17,6 +14,9 @@
       </template>
     </ClientOnly>
   </section>
+  <section v-if="popular" class="mt-24">
+    <MediaCarousel title="Popular Movies" :medias="popular" link="/" />
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -25,13 +25,14 @@ import type { Movie, TV, Genre } from '~/types/media'
 import type { BaseCarousel } from '#build/components'
 
 const { data } = useAsyncData(async () => {
-  const [trending, movie_genres, tv_genres] = await Promise.all([
+  const [trending, popular, movie_genres, tv_genres] = await Promise.all([
     $fetch<APIResponse<(Movie | TV)[]>>('/api/trending'),
+    $fetch<APIResponse<(Movie | TV)[]>>('/api/movies/popular'),
     $fetch<{ genres: Genre[] }>('/api/genres/movie'),
     $fetch<{ genres: Genre[] }>('/api/genres/tv')
   ])
 
-  return { trending, movie_genres, tv_genres }
+  return { trending, popular, movie_genres, tv_genres }
 })
 
 const carouselEl = ref<InstanceType<typeof BaseCarousel> | null>(null)
@@ -55,7 +56,11 @@ const options = reactive({
 })
 
 const trending = computed(() => {
-  return data.value?.trending
+  return data.value?.trending.results
+})
+
+const popular = computed(() => {
+  return data.value?.popular.results
 })
 
 const genres = computed(() => {
