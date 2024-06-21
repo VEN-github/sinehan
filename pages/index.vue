@@ -25,13 +25,13 @@ import type { Movie, TV, Genre } from '~/types/media'
 import type { BaseCarousel } from '#build/components'
 
 const { data } = useAsyncData(async () => {
-  const data = await Promise.all([
+  const [trending, movie_genres, tv_genres] = await Promise.all([
     $fetch<APIResponse<(Movie | TV)[]>>('/api/trending'),
     $fetch<{ genres: Genre[] }>('/api/genres/movie'),
     $fetch<{ genres: Genre[] }>('/api/genres/tv')
   ])
 
-  return { trending: data[0], movie_genres: data[1].genres, tv_genres: data[2].genres }
+  return { trending, movie_genres, tv_genres }
 })
 
 const carouselEl = ref<InstanceType<typeof BaseCarousel> | null>(null)
@@ -60,8 +60,8 @@ const trending = computed(() => {
 
 const genres = computed(() => {
   return {
-    movie: data.value?.movie_genres,
-    tv: data.value?.tv_genres
+    movie: data.value?.movie_genres.genres,
+    tv: data.value?.tv_genres.genres
   }
 })
 

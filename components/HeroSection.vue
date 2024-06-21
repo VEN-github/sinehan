@@ -34,13 +34,12 @@
             <IconPlusCircle stroke-width="1.5" :size="18" />
             <span class="pl-2 font-medium sm:text-lg"> My List </span>
           </Button>
-          <!-- <VideoTrailerDialog :id="media.id" :media-type="mediaType">
-            <Button class="rounded-full bg-custom-primary hover:bg-custom-primary/90"
-              ><PlayCircle stroke-width="1.5" :size="20" /><span class="pl-2 font-medium sm:text-lg"
-                >Watch Trailer</span
-              ></Button
-            >
-          </VideoTrailerDialog> -->
+          <VideoTrailerDialog :id="media.id" :media-type="media.media_type">
+            <Button class="rounded-full bg-custom-primary hover:bg-custom-primary/90">
+              <IconPlayCircle stroke-width="1.5" :size="20" />
+              <span class="pl-2 font-medium sm:text-lg">Watch Trailer</span>
+            </Button>
+          </VideoTrailerDialog>
         </div>
       </BaseContainer>
     </div>
