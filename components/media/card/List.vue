@@ -5,6 +5,7 @@
       :src="media.poster_path"
       :alt="title"
       role="link"
+      @click="onNavigate"
     />
     <div>
       <NuxtLink
@@ -63,7 +64,7 @@ const title = useTitle(props.media)
 const releaseDate = useReleaseDate(props.media)
 const rating = useRating(props.media)
 
-// function onNavigate(): void {
-//   router.push(`/${slug.value}/${props.media.id}`)
-// }
+function onNavigate() {
+  navigateTo({ path: `/` })
+}
 </script>
