@@ -11,7 +11,7 @@
         <MediaCarousel title="Popular Movies" :medias="popular.movies" link="/movies" />
       </div>
       <div v-if="popular.tv?.length" class="mb-16 mt-36">
-        <MediaCarousel title="Popular TV Shows" :medias="popular.tv" link="/" />
+        <MediaCarousel title="Popular TV Shows" :medias="popular.tv" link="/tv-shows" />
       </div>
       <template #fallback>
         <div class="grid h-svh place-items-center">
