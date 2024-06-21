@@ -11,7 +11,7 @@
         </BaseCarouselSlide>
       </BaseCarousel>
       <template #fallback>
-        <div class="grid h-dvh place-items-center">
+        <div class="grid h-svh place-items-center">
           <IconLoaderCircle class="animate-spin text-custom-primary" :size="64" />
         </div>
       </template>
