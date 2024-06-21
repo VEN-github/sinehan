@@ -90,7 +90,8 @@ export default defineNuxtConfig({
           content: 'index, follow'
         }
       ]
-    }
+    },
+    pageTransition: { name: 'page', mode: 'out-in' }
   },
   vuefire: {
     auth: {
