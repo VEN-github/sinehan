@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-full w-fit flex-col">
-    <NuxtLink :to="`/`" class="group grow">
+    <NuxtLink :to="`/${slug}/${media.id}`" class="group grow">
       <img
         class="h-full grow rounded-lg object-cover object-center drop-shadow-2xl transition-opacity group-hover:opacity-70"
         :src="media.poster_path"
@@ -10,7 +10,7 @@
     </NuxtLink>
     <div class="mt-2 flex items-center justify-between gap-x-1">
       <NuxtLink
-        :to="`/`"
+        :to="`/${slug}/${media.id}`"
         class="w-36 truncate text-lg transition-colors hover:text-custom-primary"
         :title="title"
       >
@@ -40,7 +40,7 @@ const props = defineProps({
   }
 })
 
-// const slug = useSlug(props.media)
+const slug = useSlug(props.media)
 const title = useTitle(props.media)
 const releaseDate = useReleaseDate(props.media)
 const rating = useRating(props.media)

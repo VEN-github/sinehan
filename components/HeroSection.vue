@@ -10,7 +10,7 @@
       <BaseContainer class="relative pb-6 pt-4 sm:pb-14">
         <div class="mb-8 flex flex-col gap-y-2 sm:gap-y-4">
           <NuxtLink
-            to="/"
+            :to="`/${slug}/${media.id}`"
             class="text-2xl font-bold tracking-tight transition-colors hover:text-custom-primary xs:text-3xl sm:text-6xl"
           >
             {{ title }}
@@ -60,7 +60,7 @@ const props = defineProps({
   }
 })
 
-// const slug = useSlug(props.media)
+const slug = useSlug(props.media)
 const title = useTitle(props.media)
 const releaseDate = useReleaseDate(props.media)
 const { genres, genreNamesString } = useGenres(props.media, props.genres.movie, props.genres.tv)

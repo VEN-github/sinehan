@@ -9,7 +9,7 @@
     />
     <div>
       <NuxtLink
-        :to="`/`"
+        :to="`/${slug}/${media.id}`"
         :title="title"
         class="line-clamp-2 font-semibold transition-colors hover:text-custom-primary sm:text-xl xl:text-2xl"
       >
@@ -58,13 +58,12 @@ const props = defineProps({
   }
 })
 
-// const router = useRouter()
-// const slug = useSlug(props.media)
+const slug = useSlug(props.media)
 const title = useTitle(props.media)
 const releaseDate = useReleaseDate(props.media)
 const rating = useRating(props.media)
 
 function onNavigate() {
-  navigateTo({ path: `/` })
+  navigateTo({ path: `/${slug}/${props.media.id}` })
 }
 </script>
