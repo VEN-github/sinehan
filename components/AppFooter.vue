@@ -1,5 +1,5 @@
 <template>
-  <footer class="self-end py-8">
+  <footer id="footer" class="self-end py-8">
     <BaseContainer>
       <div class="flex items-center justify-center gap-x-1 text-custom-foreground">
         <IconCopyright :size="18" />

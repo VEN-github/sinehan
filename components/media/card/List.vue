@@ -37,12 +37,12 @@
         >
           <IconPlusCircle stroke-width="1.5" :size="16" /><span>My List</span>
         </button>
-        <VideoTrailerDialog :id="media.id" :media-type="media.media_type">
-          <Button size="sm" class="rounded-full bg-custom-primary hover:bg-custom-primary/90">
+        <Button size="sm" class="rounded-full bg-custom-primary hover:bg-custom-primary/90" as-child>
+          <NuxtLink :to="`/${slug}/${media.id}?play=1`">
             <IconPlayCircle stroke-width="1.5" :size="16" />
-            <span class="pl-2 font-medium">Watch Trailer</span>
-          </Button>
-        </VideoTrailerDialog>
+            <span class="pl-2 font-medium">Watch Now</span>
+          </NuxtLink>
+        </Button>
       </div>
     </div>
   </div>

@@ -27,7 +27,7 @@ import type { APIResponse } from '~/types/api'
 import type { Movie, TV, Genre } from '~/types/media'
 import type { BaseCarousel } from '#build/components'
 
-const { data } = useAsyncData(async () => {
+const { data } = await useAsyncData(async () => {
   const [trending, popular_movie, popular_tv, movie_genres, tv_genres] = await Promise.all([
     $fetch<APIResponse<(Movie | TV)[]>>('/api/trending'),
     $fetch<APIResponse<(Movie | TV)[]>>('/api/movies/popular'),
