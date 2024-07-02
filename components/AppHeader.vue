@@ -1,6 +1,7 @@
 <template>
   <header
     id="header"
+    ref="header"
     class="fixed left-0 top-0 z-10 w-full py-10 transition-transform duration-300 md:py-12"
     :class="[isShow ? 'translate-y-0' : '-translate-y-96']"
   >
@@ -30,6 +31,7 @@
 const isOpen = ref<boolean>(false)
 const isShow = ref<boolean>(true)
 const lastScrollTop = ref<number>(0)
+const header = ref<HTMLElement | null>(null)
 let timeout: ReturnType<typeof setTimeout>
 
 provide('isOpen', isOpen)
@@ -60,6 +62,7 @@ function detectClickOutside(event: Event) {
 
 function handleScroll() {
   clearTimeout(timeout)
+  if (header.value?.classList.contains('hidden')) return
 
   if (window.scrollY > lastScrollTop.value) {
     isShow.value = false

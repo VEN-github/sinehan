@@ -199,15 +199,15 @@ function handleShowPlayer() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 
   if (showPlayer.value) {
-    document.getElementById('header')?.classList.add('!hidden')
-    document.getElementById('footer')?.classList.add('!hidden')
+    document.getElementById('header')?.classList.add('hidden')
+    document.getElementById('footer')?.classList.add('hidden')
 
     timeout = setTimeout(() => {
       isPlaying.value = true
     }, 1500)
   } else {
-    document.getElementById('header')?.classList.remove('!hidden')
-    document.getElementById('footer')?.classList.remove('!hidden')
+    document.getElementById('header')?.classList.remove('hidden')
+    document.getElementById('footer')?.classList.remove('hidden')
 
     isPlaying.value = false
     if (timeout) clearTimeout(timeout)
