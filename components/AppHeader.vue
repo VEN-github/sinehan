@@ -1,5 +1,6 @@
 <template>
   <header
+    id="header"
     class="fixed left-0 top-0 z-10 w-full py-10 transition-transform duration-300 md:py-12"
     :class="[isShow ? 'translate-y-0' : '-translate-y-96']"
   >

@@ -73,7 +73,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-custom-bg text-custom-foreground;
+    @apply overflow-x-hidden bg-custom-bg text-custom-foreground;
   }
 }
 
@@ -148,5 +148,9 @@
   .hamburger--slider.is-active .hamburger-inner::after {
     top: 20px;
     transform: translate3d(0, -20px, 0) rotate(-90deg);
+  }
+
+  .dots-container {
+    @apply !bottom-0.5 sm:!bottom-3;
   }
 }

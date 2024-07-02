@@ -26,11 +26,11 @@ const links = ref([
   {
     text: 'TV Shows',
     url: '/tv-shows'
-  },
-  {
-    text: 'My List',
-    url: '/my-list'
   }
+  // {
+  //   text: 'My List',
+  //   url: '/my-list'
+  // }
 ])
 
 const navLinksClass = computed<string>(() => {

@@ -7,7 +7,8 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@nuxt/fonts',
     'nuxt-vuefire',
-    'nuxt-lucide-icons'
+    'nuxt-lucide-icons',
+    'dayjs-nuxt'
   ],
   css: ['~/assets/css/animation.css'],
   eslint: {
@@ -89,7 +90,8 @@ export default defineNuxtConfig({
           content: 'index, follow'
         }
       ]
-    }
+    },
+    pageTransition: { name: 'page', mode: 'out-in' }
   },
   vuefire: {
     auth: {
@@ -104,6 +106,12 @@ export default defineNuxtConfig({
       messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       appId: process.env.FIREBASE_APP_ID,
       measurementId: process.env.FIREBASE_MEASUREMENT_ID
+    }
+  },
+  runtimeConfig: {
+    tmdbApiKey: process.env.TMDB_API_KEY,
+    public: {
+      tmdbPublicApiUrl: process.env.TMDB_PUBLIC_API_URL
     }
   },
   lucide: {
