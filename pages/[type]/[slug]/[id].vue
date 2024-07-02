@@ -1,6 +1,6 @@
 <template>
   <section>
-    <ClientOnly>
+    <ClientOnly fallback-tag="div">
       <div
         v-if="showPlayer && !isPlaying"
         class="min-h-screen w-full relative bg-cover bg-center bg-no-repeat"
@@ -79,6 +79,11 @@
           <MediaCarousel title="You might also like" :medias="similarMedias" />
         </div>
       </template>
+      <template #fallback>
+        <div class="grid h-svh place-items-center">
+          <IconLoaderCircle class="animate-spin text-custom-primary" :size="64" />
+        </div>
+      </template>
     </ClientOnly>
   </section>
 </template>
@@ -109,29 +114,25 @@ const type = computed<string>(() => {
   }
 })
 
-const { data } = await useAsyncData(async () => {
+const { data } = await useAsyncData(`media:${route.params.id}`, async () => {
   const [media, casts, images, similar] = await Promise.all([
     $fetch<Movie | TV>(`/api/${type.value}/details`, {
       params: {
-        type: route.params.type,
         id: route.params.id
       }
     }),
     $fetch(`/api/${type.value}/casts`, {
       params: {
-        type: route.params.type,
         id: route.params.id
       }
     }),
     $fetch(`/api/${type.value}/images`, {
       params: {
-        type: route.params.type,
         id: route.params.id
       }
     }),
     $fetch(`/api/${type.value}/similar`, {
       params: {
-        type: route.params.type,
         id: route.params.id
       }
     })

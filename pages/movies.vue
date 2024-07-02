@@ -9,6 +9,7 @@ import type { Movie } from '~/types/media'
 const page = ref<number>(1)
 
 const { data: movies } = await useFetch<APIResponse<Movie[]>>('/api/movies/discover', {
+  key: 'movies',
   params: {
     page: page.value
   },

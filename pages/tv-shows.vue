@@ -9,6 +9,7 @@ import type { TV } from '~/types/media'
 const page = ref<number>(1)
 
 const { data: tv } = await useFetch<APIResponse<TV[]>>('/api/tv/discover', {
+  key: 'tv',
   params: {
     page: page.value
   },
