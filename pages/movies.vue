@@ -9,7 +9,7 @@
         <Pagination
           v-model:page="page"
           :total="500"
-          show-edges
+          :show-edges="showPaginationEdges"
           :sibling-count="1"
           :default-page="1"
         >
@@ -54,6 +54,7 @@ import type { APIResponse } from '~/types/api'
 import type { Movie } from '~/types/media'
 
 const page = ref<number>(1)
+const showPaginationEdges = ref<boolean>(false)
 
 watch(page, () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -69,4 +70,17 @@ const { data: movies, pending } = await useAsyncData(
     watch: [page],
   }
 )
+
+onMounted(() => {
+  handleResize()
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
+function handleResize() {
+  showPaginationEdges.value = window.innerWidth >= 640
+}
 </script>
