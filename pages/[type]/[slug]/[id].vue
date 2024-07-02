@@ -75,7 +75,7 @@
             </BaseContainer>
           </div>
         </div>
-        <div v-if="similarMedias?.length" class="mb-16 mt-36">
+        <div v-if="similarMedias?.length" class="mb-16 mt-24">
           <MediaCarousel title="You might also like" :medias="similarMedias" />
         </div>
       </template>
