@@ -201,7 +201,6 @@ function handleShowPlayer() {
   if (showPlayer.value) {
     document.getElementById('header')?.classList.add('hidden')
     document.getElementById('footer')?.classList.add('hidden')
-    document.body.classList.add('overflow-hidden')
 
     timeout = setTimeout(() => {
       isPlaying.value = true
@@ -209,7 +208,7 @@ function handleShowPlayer() {
   } else {
     document.getElementById('header')?.classList.remove('hidden')
     document.getElementById('footer')?.classList.remove('hidden')
-    document.body.classList.remove('overflow-hidden')
+
     isPlaying.value = false
     if (timeout) clearTimeout(timeout)
   }
