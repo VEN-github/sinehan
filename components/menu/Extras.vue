@@ -1,51 +1,104 @@
 <template>
   <div class="flex items-center gap-x-2 md:gap-x-4">
-    <button type="button" class="flex items-center gap-x-2" @click="open = true">
-      <IconSearch :size="20" stroke-width="1.5" />
-      <p class="hidden md:block">
-        Search
-        <kbd
-          class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100"
-        >
-          <span class="text-xs">CTRL</span>K
-        </kbd>
-      </p>
-    </button>
+    <Dialog v-model:open="open">
+      <DialogTrigger as-child>
+        <button type="button" class="flex items-center gap-x-2">
+          <IconSearch :size="20" stroke-width="1.5" />
+          <p class="hidden md:block">
+            Search
+            <kbd
+              class="font-mono pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 text-[10px] font-medium opacity-100"
+            >
+              <span class="text-xs">CTRL</span>K
+            </kbd>
+          </p>
+        </button>
+      </DialogTrigger>
+      <DialogContent class="!gap-0 !border-none bg-custom-bg p-0">
+        <DialogHeader class="mr-10 mt-1">
+          <DialogTitle>
+            <div class="relative w-full items-center">
+              <Input
+                id="search"
+                v-model.trim="search"
+                type="text"
+                placeholder="Search for movies, TV shows and more..."
+                class="!border-none bg-transparent pl-10 !ring-0 !ring-offset-0"
+              />
+              <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
+                <IconSearch class="size-6 text-muted-foreground" />
+              </span>
+            </div>
+          </DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
+        <div v-if="search" class="border-t border-t-custom-primary px-2 py-4">
+          <div v-if="pending" class="grid h-[35vh] place-items-center">
+            <IconLoaderCircle class="animate-spin text-custom-primary" :size="52" />
+          </div>
+          <div
+            v-else-if="searchResults?.results?.length === 0"
+            class="grid h-[15vh] place-items-center"
+          >
+            No results found.
+          </div>
+          <ul v-else class="flex h-96 flex-wrap gap-1 overflow-y-auto">
+            <li v-for="item in searchResults?.results" :key="item.id">
+              <NuxtLink :to="`/${useSlug(item)}/${item.id}`" @click="handleOpenChange">
+                <img :src="item.poster_path" alt="" class="size-56 rounded-lg object-contain" />
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+      </DialogContent>
+    </Dialog>
     <Separator orientation="vertical" class="hidden !h-5 lg:block" />
     <ClientOnly fallback-tag="span" fallback="Loading...">
       <BaseAvatar />
     </ClientOnly>
     <MenuButton @toggle-menu="emit('toggleMenu')" />
-    <CommandDialog v-model:open="open">
-      <CommandInput placeholder="Type a command or search..." />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-      </CommandList>
-    </CommandDialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useMagicKeys } from '@vueuse/core'
+import type { APIResponse } from '~/types/api'
+import type { Movie, TV } from '~/types/media'
 
 const emit = defineEmits(['toggleMenu'])
 
 const open = ref<boolean>(false)
+const search = ref<string>('')
 
 const { Meta_K, Ctrl_K } = useMagicKeys({
   passive: false,
   onEventFired(e) {
-    if (e.key === 'k' && (e.metaKey || e.ctrlKey))
-      e.preventDefault()
-  },
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) e.preventDefault()
+  }
 })
 
 watch([Meta_K, Ctrl_K], (v) => {
-  if (v[0] || v[1])
-    handleOpenChange()
+  if (!(v[0] || v[1])) handleOpenChange()
+})
+
+watch(open, (v) => {
+  if (!v) search.value = ''
 })
 
 function handleOpenChange() {
   open.value = !open.value
 }
+
+const { data: searchResults, pending } = await useAsyncData(
+  `search:${search.value}`,
+  () =>
+    $fetch<APIResponse<(Movie | TV)[]>>('/api/search', {
+      params: {
+        search: search.value
+      }
+    }),
+  {
+    watch: [search]
+  }
+)
 </script>
