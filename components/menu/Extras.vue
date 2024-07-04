@@ -14,7 +14,7 @@
           </p>
         </button>
       </DialogTrigger>
-      <DialogContent class="!gap-0 !border-none bg-custom-bg p-0">
+      <DialogContent class="!gap-0 !border-none bg-white !px-2 !py-0 text-custom-bg">
         <DialogHeader class="mr-10 mt-1">
           <DialogTitle>
             <div class="relative w-full items-center">
@@ -32,20 +32,27 @@
           </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div v-if="search" class="border-t border-t-custom-primary px-2 py-4">
-          <div v-if="pending" class="grid h-[35vh] place-items-center">
+        <div v-if="search" class="border-t border-t-custom-secondary py-2">
+          <div v-if="pending" class="grid h-[10vh] place-items-center">
             <IconLoaderCircle class="animate-spin text-custom-primary" :size="52" />
           </div>
           <div
             v-else-if="searchResults?.results?.length === 0"
-            class="grid h-[15vh] place-items-center"
+            class="grid h-[10vh] place-items-center font-medium"
           >
             No results found.
           </div>
-          <ul v-else class="flex h-96 flex-wrap gap-1 overflow-y-auto">
+          <ul
+            v-else
+            class="grid h-96 grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] gap-1.5 overflow-y-auto"
+          >
             <li v-for="item in searchResults?.results" :key="item.id">
               <NuxtLink :to="`/${useSlug(item)}/${item.id}`" @click="handleOpenChange">
-                <img :src="item.poster_path" alt="" class="size-56 rounded-lg object-contain" />
+                <img
+                  :src="item.poster_path"
+                  :alt="useTitle(item)"
+                  class="h-48 w-36 rounded object-cover"
+                />
               </NuxtLink>
             </li>
           </ul>
