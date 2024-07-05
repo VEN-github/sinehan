@@ -14,7 +14,9 @@
           </p>
         </button>
       </DialogTrigger>
-      <DialogContent class="!gap-0 !border-none bg-white !px-2 !py-0 text-custom-bg">
+      <DialogContent
+        class="!top-36 !w-[90vw] !-translate-y-0 !gap-0 !rounded !border-none bg-white !px-2 !py-0 text-custom-bg sm:!top-48 sm:!w-full"
+      >
         <DialogHeader class="mr-10 mt-1">
           <DialogTitle>
             <div class="relative w-full items-center">
