@@ -7,7 +7,10 @@ export default defineEventHandler(async (event) => {
   const config = useTMDBConfig()
   const query = getQuery(event)
 
-  const response = await $fetch<APIResponse<TV[]>>(`/tv/${query.id}/recommendations?language=en-US&page=1`, config)
+  const response = await $fetch<APIResponse<TV[]>>(
+    `/tv/${query.id}/similar?language=en-US&page=1`,
+    config
+  )
 
   useMediaImage(response.results)
 

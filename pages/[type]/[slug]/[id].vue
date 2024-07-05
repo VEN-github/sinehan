@@ -1,16 +1,30 @@
 <template>
   <section>
+    <Head>
+      <Title>{{ title }}</Title>
+      <Meta name="description" :content="description" />
+      <Meta property="og:title" :content="title" />
+      <Meta property="og:description" :content="description" />
+      <Meta property="og:image" :content="media?.backdrop_path.large" />
+    </Head>
     <ClientOnly fallback-tag="div">
       <div
         v-if="showPlayer && !isPlaying"
-        class="min-h-screen w-full relative bg-cover bg-center bg-no-repeat"
+        class="relative min-h-screen w-full bg-cover bg-center bg-no-repeat"
         :style="{ backgroundImage: `url(${media?.backdrop_path.original})` }"
       >
-        <div class="min-h-screen w-full grid place-items-center bg-gradient-to-br from-custom-bg from-0% to-transparent">
+        <div
+          class="grid min-h-screen w-full place-items-center bg-gradient-to-br from-custom-bg from-0% to-transparent"
+        >
           <IconLoaderCircle class="animate-spin text-custom-primary" :size="64" />
         </div>
       </div>
-      <AppPlayer v-else-if="isPlaying && showPlayer && media" :id="media?.id" :media-type="mediaType" @on-close="handleShowPlayer" />
+      <AppPlayer
+        v-else-if="isPlaying && showPlayer && media"
+        :id="media?.id"
+        :media-type="mediaType"
+        @on-close="handleShowPlayer"
+      />
       <template v-else>
         <div
           class="min-h-screen w-full bg-cover bg-center bg-no-repeat"
@@ -22,7 +36,7 @@
             <BaseContainer>
               <h1 class="text-2xl font-bold sm:text-4xl xl:text-7xl">{{ title }}</h1>
               <p
-                class="mt-2 flex flex-wrap items-center gap-3 text-sm text-custom-foreground-secondary sm:text-base"
+                class="text-custom-foreground-secondary mt-2 flex flex-wrap items-center gap-3 text-sm sm:text-base"
               >
                 <span>{{ releaseDate }}</span>
                 <Separator v-if="runtime" orientation="vertical" class="!h-3.5" />
@@ -40,7 +54,10 @@
                 {{ media?.overview }}
               </p>
               <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row">
-                <Button class="rounded-full bg-custom-primary hover:bg-custom-primary/90" @click="handleShowPlayer">
+                <Button
+                  class="rounded-full bg-custom-primary hover:bg-custom-primary/90"
+                  @click="handleShowPlayer"
+                >
                   <IconPlayCircle stroke-width="1.5" :size="20" />
                   <span class="pl-2 font-medium sm:text-lg">Watch Now</span>
                 </Button>
@@ -95,7 +112,11 @@ import type { Movie, TV, Genre } from '~/types/media'
 definePageMeta({
   key: route => route.fullPath,
   validate: async (route) => {
-    return (route.params.type === 'movie' || route.params.type === 'tv-show') && typeof route.params.id === 'string' && /^\d+$/.test(route.params.id)
+    return (
+      (route.params.type === 'movie' || route.params.type === 'tv-show')
+      && typeof route.params.id === 'string'
+      && /^\d+$/.test(route.params.id)
+    )
   }
 })
 
@@ -158,6 +179,14 @@ const mediaType = computed(() => {
 
 const title = computed(() => {
   return media.value ? useTitle(media.value) : ''
+})
+
+const description = computed(() => {
+  return media.value
+    ? media.value.overview.length > 150
+      ? media.value.overview.slice(0, 147) + '...'
+      : media.value.overview
+    : ''
 })
 
 const releaseDate = computed(() => {
