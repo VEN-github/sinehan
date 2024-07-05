@@ -1,6 +1,6 @@
 <template>
   <div
-    class="custom-bg-img relative grid place-content-center bg-contain bg-fixed bg-center px-2 py-12 xs:h-svh xs:py-0 sm:px-0"
+    class="custom-bg-img relative grid h-full place-content-center bg-contain bg-fixed bg-center px-2 py-12 xs:h-svh xs:py-0 sm:px-0"
   >
     <div class="absolute inset-0 w-full bg-custom-bg/85"></div>
     <AppLogo class="z-10 mx-auto mb-5" />
