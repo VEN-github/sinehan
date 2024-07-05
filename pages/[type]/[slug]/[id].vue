@@ -53,7 +53,7 @@
               <p v-if="media?.overview" class="mt-5 max-w-3xl sm:text-lg">
                 {{ media?.overview }}
               </p>
-              <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row">
+              <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <Button
                   class="rounded-full bg-custom-primary hover:bg-custom-primary/90"
                   @click="handleShowPlayer"
@@ -106,7 +106,6 @@
 </template>
 
 <script setup lang="ts">
-import AppPlayer from '~/components/AppPlayer.vue'
 import type { Movie, TV, Genre } from '~/types/media'
 
 definePageMeta({

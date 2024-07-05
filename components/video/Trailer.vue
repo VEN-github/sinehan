@@ -1,5 +1,5 @@
 <template>
-  <DialogContent class="max-w-2xl border-0 bg-custom-bg">
+  <DialogContent class="max-w-[95vw] !rounded border-0 bg-custom-bg sm:max-w-2xl">
     <DialogHeader>
       <DialogTitle></DialogTitle>
       <DialogDescription></DialogDescription>
