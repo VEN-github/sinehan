@@ -1,7 +1,7 @@
 <template>
   <div class="pt-32 sm:pt-36 lg:pt-40 2xl:pt-44">
     <BaseContainer>
-      <div class="flex flex-wrap items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center justify-end gap-4">
         <!-- <div class="flex items-center gap-2">
         <select v-model="filters.type" class="bg-transparent outline-none">
           <option class="bg-custom-bg" value="all">All</option>
@@ -41,7 +41,7 @@
       </div>
       <div
         v-if="layout === 'grid'"
-        class="mt-5 grid place-items-center gap-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+        class="mt-5 grid grid-cols-2 place-items-center gap-8 xs:gap-4 sm:grid-cols-3 sm:gap-8 lg:grid-cols-4 xl:grid-cols-5"
       >
         <template v-for="media in medias" :key="media.id">
           <MediaCardGrid :media="media" :img-width="imgWidth" />

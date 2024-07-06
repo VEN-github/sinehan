@@ -11,7 +11,7 @@
     <div class="mt-2 flex items-center justify-between gap-x-1">
       <NuxtLink
         :to="`/${slug}/${media.id}`"
-        class="w-36 truncate text-lg transition-colors hover:text-custom-primary"
+        class="w-24 truncate text-lg transition-colors hover:text-custom-primary sm:w-36"
         :title="title"
       >
         {{ title }}
