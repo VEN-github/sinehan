@@ -1,6 +1,6 @@
 <template>
   <div
-    class="custom-bg-img relative grid h-svh place-content-center bg-contain bg-fixed bg-center px-2 sm:px-0"
+    class="custom-bg-img relative grid h-full place-content-center bg-contain bg-fixed bg-center px-3 py-8 xs:h-svh xs:py-0 sm:px-0"
   >
     <div class="absolute inset-0 w-full bg-custom-bg/85"></div>
     <AppLogo class="z-10 mx-auto mb-5" />
@@ -10,6 +10,14 @@
         <CardDescription class="text-custom-bg">
           Enter your email below to login to your account
         </CardDescription>
+        <Alert class="mt-3 border-0 bg-sky-100">
+          <AlertDescription>
+            <div class="text-sm">
+              <p><span>Email: </span><span class="font-semibold">demo@demo.com</span></p>
+              <p><span>Password: </span><span class="font-semibold">password</span></p>
+            </div>
+          </AlertDescription>
+        </Alert>
       </CardHeader>
       <CardContent>
         <form @submit.prevent="login">
@@ -68,10 +76,14 @@
             </Button>
           </div>
         </form>
-        <div class="mt-4 text-center text-sm text-custom-bg">
+        <div class="mt-1.5 text-center text-xs text-custom-accent">
+          This website is for demo purposes only. <br />
+          Not for commercial use.
+        </div>
+        <!-- <div class="mt-4 text-center text-sm text-custom-bg">
           Don't have an account?
           <NuxtLink to="/sign-up" class="underline"> Sign up </NuxtLink>
-        </div>
+        </div> -->
       </CardContent>
     </Card>
   </div>

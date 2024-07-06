@@ -11,6 +11,13 @@
           All rights reserved.
         </p>
       </div>
+      <div class="mt-3 text-center text-xs text-custom-primary">
+        <p>This website is for demo purposes only. Not for commercial use.</p>
+        <p>
+          The content and data presented are purely for demonstration and do not represent real
+          information.
+        </p>
+      </div>
     </BaseContainer>
   </footer>
 </template>
