@@ -3,7 +3,7 @@
     <Dialog v-model:open="open">
       <DialogTrigger as-child>
         <button type="button" class="flex items-center gap-x-2">
-          <IconSearch :size="20" stroke-width="1.5" />
+          <IconSearch :size="18" stroke-width="1.5" />
           <p class="hidden md:block">
             Search
             <kbd

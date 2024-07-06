@@ -7,10 +7,22 @@
           <div class="dots-container"></div>
         </BaseCarouselSlide>
       </BaseCarousel>
+      <div v-if="nowPlaying?.length" class="mt-24">
+        <MediaCarousel title="Now Playing" :medias="nowPlaying" link="/movies" />
+      </div>
       <div v-if="popular.movies?.length" class="mt-24">
         <MediaCarousel title="Popular Movies" :medias="popular.movies" link="/movies" />
       </div>
-      <div v-if="popular.tv?.length" class="mb-16 mt-36">
+      <div v-if="topRated.movies?.length" class="mt-24">
+        <MediaCarousel title="Top Rated Movies" :medias="topRated.movies" link="/movies" />
+      </div>
+      <div v-if="airing?.length" class="mt-24">
+        <MediaCarousel title="Airing Today" :medias="airing" link="/tv-shows" />
+      </div>
+      <div v-if="topRated.tv?.length" class="mt-24">
+        <MediaCarousel title="Top Rated TV Shows" :medias="topRated.tv" link="/tv-shows" />
+      </div>
+      <div v-if="popular.tv?.length" class="mb-16 mt-24">
         <MediaCarousel title="Popular TV Shows" :medias="popular.tv" link="/tv-shows" />
       </div>
       <template #fallback>
@@ -32,15 +44,39 @@ useHead({
 })
 
 const { data } = await useAsyncData('media', async () => {
-  const [trending, popular_movie, popular_tv, movie_genres, tv_genres] = await Promise.all([
+  const [
+    trending,
+    now_playing,
+    top_rated_movie,
+    popular_movie,
+    airing,
+    top_rated_tv,
+    popular_tv,
+    movie_genres,
+    tv_genres
+  ] = await Promise.all([
     $fetch<APIResponse<(Movie | TV)[]>>('/api/trending'),
+    $fetch<APIResponse<(Movie | TV)[]>>('/api/movies/now-playing'),
+    $fetch<APIResponse<(Movie | TV)[]>>('/api/movies/top-rated'),
     $fetch<APIResponse<(Movie | TV)[]>>('/api/movies/popular'),
+    $fetch<APIResponse<(Movie | TV)[]>>('/api/tv/airing'),
+    $fetch<APIResponse<(Movie | TV)[]>>('/api/tv/top-rated'),
     $fetch<APIResponse<(Movie | TV)[]>>('/api/tv/popular'),
     $fetch<{ genres: Genre[] }>('/api/genres/movie'),
     $fetch<{ genres: Genre[] }>('/api/genres/tv')
   ])
 
-  return { trending, popular_movie, popular_tv, movie_genres, tv_genres }
+  return {
+    trending,
+    now_playing,
+    top_rated_movie,
+    popular_movie,
+    airing,
+    top_rated_tv,
+    popular_tv,
+    movie_genres,
+    tv_genres
+  }
 })
 
 if (!data.value) {
@@ -71,11 +107,26 @@ const trending = computed(() => {
   return data.value?.trending.results
 })
 
+const nowPlaying = computed(() => {
+  return data.value?.now_playing.results
+})
+
+const topRated = computed(() => {
+  return {
+    movies: data.value?.top_rated_movie.results,
+    tv: data.value?.top_rated_tv.results
+  }
+})
+
 const popular = computed(() => {
   return {
     movies: data.value?.popular_movie.results,
     tv: data.value?.popular_tv.results
   }
+})
+
+const airing = computed(() => {
+  return data.value?.airing.results
 })
 
 const genres = computed(() => {
