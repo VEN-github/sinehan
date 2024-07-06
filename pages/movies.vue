@@ -4,8 +4,17 @@
       <div v-if="pending" class="grid h-svh place-items-center">
         <IconLoaderCircle class="animate-spin text-custom-primary" :size="64" />
       </div>
-      <Media v-else :medias="movies?.results" />
-      <div class="mb-8 mt-16 flex justify-center">
+      <Media
+        v-else
+        :medias="movies?.results"
+        :genres="genres"
+        :selected-genres="selectedGenres"
+        @handle-filter="selectGenre"
+        @remove-filter="removeGenre"
+        @hide-pagination="showPagination = false"
+        @clear-filters="clearFilters"
+      />
+      <div v-if="showPagination" class="mb-8 mt-16 flex justify-center">
         <Pagination
           v-model:page="page"
           :total="500"
@@ -50,7 +59,7 @@
 
 <script setup lang="ts">
 import type { APIResponse } from '~/types/api'
-import type { Movie } from '~/types/media'
+import type { Movie, Genre } from '~/types/media'
 
 useHead({
   title: 'Movies'
@@ -58,27 +67,43 @@ useHead({
 
 const page = ref<number>(1)
 const showPaginationEdges = ref<boolean>(false)
+const selectedGenres = ref<Genre[]>([])
+const showPagination = ref<boolean>(true)
 
 watch(page, () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 })
 
-const { data: movies, pending } = await useAsyncData(
+const { data, pending } = await useAsyncData(
   'movies',
-  () =>
-    $fetch<APIResponse<Movie[]>>('/api/movies/discover', {
-      params: {
-        page: page.value
-      }
-    }),
+  async () => {
+    const [movies, genres] = await Promise.all([
+      $fetch<APIResponse<Movie[]>>('/api/movies/discover', {
+        params: {
+          page: page.value
+        }
+      }),
+      $fetch<{ genres: Genre[] }>('/api/genres/movie')
+    ])
+
+    return { movies, genres }
+  },
   {
     watch: [page]
   }
 )
 
-if (!movies.value) {
+if (!data.value) {
   throw createError({ statusCode: 404, statusMessage: 'Not Found' })
 }
+
+const movies = computed(() => {
+  return data.value?.movies
+})
+
+const genres = computed(() => {
+  return data.value?.genres.genres
+})
 
 onMounted(() => {
   handleResize()
@@ -91,5 +116,25 @@ onUnmounted(() => {
 
 function handleResize() {
   showPaginationEdges.value = window.innerWidth >= 640
+}
+
+function selectGenre(genre: Genre) {
+  const index = selectedGenres.value.findIndex(
+    (selectedGenre: Genre) => selectedGenre.id === genre.id
+  )
+
+  if (index === -1) {
+    selectedGenres.value.push(genre)
+  }
+}
+
+function removeGenre(id: number): void {
+  const index = selectedGenres.value.findIndex((genre: Genre) => genre.id === id)
+  selectedGenres.value.splice(index, 1)
+}
+
+function clearFilters() {
+  selectedGenres.value = []
+  showPagination.value = true
 }
 </script>

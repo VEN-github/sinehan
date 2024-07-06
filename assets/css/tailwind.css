@@ -153,4 +153,10 @@
   .dots-container {
     @apply !bottom-0.5 sm:!bottom-3;
   }
+
+  @media screen and (min-width: 1440px) {
+    .filter-container {
+      @apply px-4;
+    }
+  }
 }
