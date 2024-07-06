@@ -97,6 +97,10 @@ definePageMeta({
   layout: false
 })
 
+useHead({
+  title: 'Login'
+})
+
 const auth = useFirebaseAuth() as Auth
 const router = useRouter()
 const models = reactive({

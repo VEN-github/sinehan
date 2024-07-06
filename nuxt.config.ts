@@ -26,7 +26,6 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en'
       },
-      title: 'Sinehan',
       link: [
         {
           rel: 'apple-touch-icon',

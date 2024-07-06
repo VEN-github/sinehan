@@ -52,6 +52,10 @@
 import type { APIResponse } from '~/types/api'
 import type { TV } from '~/types/media'
 
+useHead({
+  title: 'TV Shows'
+})
+
 const page = ref<number>(1)
 const showPaginationEdges = ref<boolean>(false)
 
