@@ -17,11 +17,14 @@
             <PaginationFirst
               class="size-8 border-0 bg-primary hover:bg-custom-primary xs:size-10"
             />
-            <PaginationPrev
-              class="size-8 border-0 bg-primary hover:bg-custom-primary xs:size-10"
-            />
+            <PaginationPrev class="size-8 border-0 bg-primary hover:bg-custom-primary xs:size-10" />
             <template v-for="(item, index) in items">
-              <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
+              <PaginationListItem
+                v-if="item.type === 'page'"
+                :key="index"
+                :value="item.value"
+                as-child
+              >
                 <Button
                   class="size-8 p-0 hover:bg-custom-primary xs:size-10"
                   :class="{ 'bg-custom-primary': item.value === page }"
@@ -31,12 +34,8 @@
               </PaginationListItem>
               <PaginationEllipsis v-else :key="item.type" :index="index" />
             </template>
-            <PaginationNext
-              class="size-8 border-0 bg-primary hover:bg-custom-primary xs:size-10"
-            />
-            <PaginationLast
-              class="size-8 border-0 bg-primary hover:bg-custom-primary xs:size-10"
-            />
+            <PaginationNext class="size-8 border-0 bg-primary hover:bg-custom-primary xs:size-10" />
+            <PaginationLast class="size-8 border-0 bg-primary hover:bg-custom-primary xs:size-10" />
           </PaginationList>
         </Pagination>
       </div>
@@ -62,14 +61,20 @@ watch(page, () => {
 
 const { data: movies, pending } = await useAsyncData(
   'movies',
-  () => $fetch<APIResponse<Movie[]>>('/api/movies/discover', {
-    params: {
-      page: page.value
-    }
-  }), {
-    watch: [page],
+  () =>
+    $fetch<APIResponse<Movie[]>>('/api/movies/discover', {
+      params: {
+        page: page.value
+      }
+    }),
+  {
+    watch: [page]
   }
 )
+
+if (!movies.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Not Found' })
+}
 
 onMounted(() => {
   handleResize()

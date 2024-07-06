@@ -161,6 +161,10 @@ const { data } = await useAsyncData(`media:${route.params.id}`, async () => {
   return { media, casts, images, similar }
 })
 
+if (!data.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Not Found' })
+}
+
 const media = computed(() => {
   return data.value?.media
 })

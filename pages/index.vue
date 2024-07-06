@@ -39,6 +39,10 @@ const { data } = await useAsyncData('media', async () => {
   return { trending, popular_movie, popular_tv, movie_genres, tv_genres }
 })
 
+if (!data.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Not Found' })
+}
+
 const carouselEl = ref<InstanceType<typeof BaseCarousel> | null>(null)
 const options = reactive({
   Panzoom: {
