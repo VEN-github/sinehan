@@ -12,7 +12,7 @@
     <BaseContainer class="relative">
       <div class="flex items-center justify-between">
         <AppLogo />
-        <nav class="hidden lg:block">
+        <nav class="hidden lg:ml-16 lg:block">
           <MenuLinks type="desktop" />
         </nav>
         <MenuExtras @toggle-menu="toggleMenu" />

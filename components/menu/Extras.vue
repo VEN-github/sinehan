@@ -4,7 +4,7 @@
       <DialogTrigger as-child>
         <button type="button" class="flex items-center gap-x-2">
           <IconSearch :size="18" stroke-width="1.5" />
-          <p class="hidden md:block">
+          <p class="hidden text-sm md:block">
             Search
             <kbd
               class="font-mono pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 text-[10px] font-medium opacity-100"
