@@ -10,19 +10,19 @@
       <div v-if="nowPlaying?.length" class="mt-24">
         <MediaCarousel title="Now Playing" :medias="nowPlaying" link="/movies" />
       </div>
-      <div v-if="popular.movies?.length" class="mt-24">
+      <div v-if="popular.movies?.length" class="mt-12 sm:mt-24">
         <MediaCarousel title="Popular Movies" :medias="popular.movies" link="/movies" />
       </div>
-      <div v-if="topRated.movies?.length" class="mt-24">
+      <div v-if="topRated.movies?.length" class="mt-12 sm:mt-24">
         <MediaCarousel title="Top Rated Movies" :medias="topRated.movies" link="/movies" />
       </div>
-      <div v-if="airing?.length" class="mt-24">
+      <div v-if="airing?.length" class="mt-12 sm:mt-24">
         <MediaCarousel title="Airing Today" :medias="airing" link="/tv-shows" />
       </div>
-      <div v-if="topRated.tv?.length" class="mt-24">
+      <div v-if="topRated.tv?.length" class="mt-12 sm:mt-24">
         <MediaCarousel title="Top Rated TV Shows" :medias="topRated.tv" link="/tv-shows" />
       </div>
-      <div v-if="popular.tv?.length" class="mb-16 mt-24">
+      <div v-if="popular.tv?.length" class="mb-16 mt-12 sm:mt-24">
         <MediaCarousel title="Popular TV Shows" :medias="popular.tv" link="/tv-shows" />
       </div>
       <template #fallback>
