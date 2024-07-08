@@ -110,7 +110,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     tmdbApiKey: process.env.TMDB_API_KEY,
     public: {
-      tmdbPublicApiUrl: process.env.TMDB_PUBLIC_API_URL
+      tmdbPublicApiUrl: process.env.TMDB_PUBLIC_API_URL,
+      vidSrcUrl: process.env.VID_SRC_URL
     }
   },
   lucide: {

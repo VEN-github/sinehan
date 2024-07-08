@@ -2,7 +2,7 @@
   <AspectRatio :ratio="16 / 9" class="relative">
     <iframe
       class="h-screen w-full"
-      :src="`https://vidsrc.to/embed/${mediaType}/${id}`"
+      :src="`${vidSrcUrl}/${mediaType}/${id}`"
       frameborder="0"
       loading="lazy"
       width="100%"
@@ -10,7 +10,14 @@
       allow="autoplay"
       allowfullscreen
     ></iframe>
-    <Button variant="outline" size="icon" class="absolute bg-transparent rounded-full top-4 right-4 z-10" @click="emit('onClose')"><IconX /></Button>
+    <Button
+      variant="outline"
+      size="icon"
+      class="absolute right-4 top-4 z-10 rounded-full bg-transparent"
+      @click="emit('onClose')"
+    >
+      <IconX />
+    </Button>
   </AspectRatio>
 </template>
 
@@ -21,4 +28,8 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['onClose'])
+
+const runtimeConfig = useRuntimeConfig()
+
+const vidSrcUrl = runtimeConfig.public.vidSrcUrl
 </script>
