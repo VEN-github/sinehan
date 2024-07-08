@@ -67,8 +67,9 @@
                     <span class="pl-2 font-medium sm:text-lg">Watch Trailer</span>
                   </Button>
                 </VideoTrailerDialog>
-                <Button variant="ghost" class="rounded-full">
-                  <IconPlusCircle stroke-width="1.5" :size="18" />
+                <Button variant="ghost" class="rounded-full" @click="addToMyList">
+                  <IconCheckCircle v-if="isOnMyList" stroke-width="1.5" :size="18" />
+                  <IconPlusCircle v-else stroke-width="1.5" :size="18" />
                   <span class="pl-2 font-medium sm:text-lg"> My List </span>
                 </Button>
               </div>
@@ -106,6 +107,9 @@
 </template>
 
 <script setup lang="ts">
+import { useFirestore } from 'vuefire'
+import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore'
+import { useToast } from '@/components/ui/toast/use-toast'
 import type { Movie, TV, Genre } from '~/types/media'
 
 definePageMeta({
@@ -119,10 +123,14 @@ definePageMeta({
   }
 })
 
+const db = useFirestore()
 const route = useRoute()
+const { toast } = useToast()
 const showPlayer = ref<boolean>(false)
 const isPlaying = ref<boolean>(false)
 let timeout: ReturnType<typeof setTimeout>
+
+const myListCollection = useCollection(collection(db, 'my-list'))
 
 const type = computed<string>(() => {
   if (route.params.type === 'movie') {
@@ -208,6 +216,13 @@ const rating = computed(() => {
   return media.value ? useRating(media.value) : null
 })
 
+const isOnMyList = computed(() => {
+  if (myListCollection.value) {
+    return myListCollection.value?.find(doc => doc.media_id == media.value?.id)
+  }
+  return false
+})
+
 const casts = computed(() => {
   return data.value?.casts
 })
@@ -244,6 +259,27 @@ function handleShowPlayer() {
 
     isPlaying.value = false
     if (timeout) clearTimeout(timeout)
+  }
+}
+
+async function addToMyList() {
+  if (isOnMyList.value) {
+    await deleteDoc(doc(db, 'my-list', isOnMyList.value?.id))
+    toast({
+      description: 'Removed from My List'
+    })
+    return
+  }
+
+  const newDoc = await addDoc(collection(db, 'my-list'), {
+    media_id: media.value?.id.toString(),
+    ...media.value
+  })
+
+  if (newDoc.id) {
+    toast({
+      description: 'Added to My List'
+    })
   }
 }
 </script>

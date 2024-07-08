@@ -30,8 +30,9 @@
         <div
           class="flex flex-col-reverse items-center gap-4 sm:flex-row sm:justify-end landscape:flex-row landscape:justify-end"
         >
-          <Button variant="ghost" class="rounded-full">
-            <IconPlusCircle stroke-width="1.5" :size="18" />
+          <Button variant="ghost" class="rounded-full" @click="addToMyList">
+            <IconCheckCircle v-if="isOnMyList" stroke-width="1.5" :size="18" />
+            <IconPlusCircle v-else stroke-width="1.5" :size="18" />
             <span class="pl-2 font-medium sm:text-lg"> My List </span>
           </Button>
           <Button class="rounded-full bg-custom-primary hover:bg-custom-primary/90" as-child>
@@ -47,6 +48,9 @@
 </template>
 
 <script setup lang="ts">
+import { useFirestore } from 'vuefire'
+import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore'
+import { useToast } from '@/components/ui/toast/use-toast'
 import type { Movie, TV } from '~/types/media'
 
 const props = defineProps({
@@ -60,9 +64,40 @@ const props = defineProps({
   }
 })
 
+const db = useFirestore()
+const { toast } = useToast()
+const myListCollection = useCollection(collection(db, 'my-list'))
 const slug = useSlug(props.media)
 const title = useTitle(props.media)
 const releaseDate = useReleaseDate(props.media)
 const { genres, genreNamesString } = useGenres(props.media, props.genres.movie, props.genres.tv)
 const rating = useRating(props.media)
+
+const isOnMyList = computed(() => {
+  if (myListCollection.value) {
+    return myListCollection.value?.find(doc => doc.media_id == props.media?.id)
+  }
+  return false
+})
+
+async function addToMyList() {
+  if (isOnMyList.value) {
+    await deleteDoc(doc(db, 'my-list', isOnMyList.value?.id))
+    toast({
+      description: 'Removed from My List'
+    })
+    return
+  }
+
+  const newDoc = await addDoc(collection(db, 'my-list'), {
+    media_id: props.media?.id.toString(),
+    ...props.media
+  })
+
+  if (newDoc.id) {
+    toast({
+      description: 'Added to My List'
+    })
+  }
+}
 </script>
