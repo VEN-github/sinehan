@@ -93,7 +93,44 @@
             </BaseContainer>
           </div>
         </div>
-        <div v-if="similarMedias?.length" class="mb-16 mt-24">
+        <div class="mt-24">
+          <BaseContainer>
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-semibold xs:text-lg sm:text-2xl xl:text-3xl 2xl:text-4xl">
+                Reviews
+              </h2>
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 text-sm font-medium text-custom-primary transition-colors hover:text-custom-primary/90 xs:text-lg"
+              >
+                <IconMessageSquareDiff stroke-width="1.5" :size="20" />
+                <span>Write a Review</span>
+              </button>
+            </div>
+            <template v-if="reviews?.length">
+              <div
+                class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
+              >
+                <ReviewCard v-for="review in formattedReviews" :key="review.id" :review="review" />
+              </div>
+              <div v-if="reviews?.length > 8" class="mt-8 flex items-center justify-center">
+                <Button
+                  class="bg-custom-primary hover:bg-custom-primary/90"
+                  @click="showAllReviews = !showAllReviews"
+                >
+                  {{ showAllReviews ? 'Show less' : 'Show all' }}
+                </Button>
+              </div>
+            </template>
+            <div v-else class="mt-8 flex flex-col items-center justify-center py-16 text-center">
+              <IconArchiveX :size="48" class="text-custom-primary" />
+              <p class="mt-5 text-center text-xl font-medium tracking-tight">
+                No reviews yet. Be the first to write one.
+              </p>
+            </div>
+          </BaseContainer>
+        </div>
+        <div v-if="similarMedias?.length" class="mb-16 mt-12 sm:mt-24">
           <MediaCarousel title="You might also like" :medias="similarMedias" />
         </div>
       </template>
@@ -128,6 +165,7 @@ const route = useRoute()
 const { toast } = useToast()
 const showPlayer = ref<boolean>(false)
 const isPlaying = ref<boolean>(false)
+const showAllReviews = ref<boolean>(false)
 let timeout: ReturnType<typeof setTimeout>
 
 const myListCollection = useCollection(collection(db, 'my-list'))
@@ -143,7 +181,7 @@ const type = computed<string>(() => {
 })
 
 const { data } = await useAsyncData(`media:${route.params.id}`, async () => {
-  const [media, casts, images, similar] = await Promise.all([
+  const [media, casts, images, reviews, similar] = await Promise.all([
     $fetch<Movie | TV>(`/api/${type.value}/details`, {
       params: {
         id: route.params.id
@@ -159,6 +197,11 @@ const { data } = await useAsyncData(`media:${route.params.id}`, async () => {
         id: route.params.id
       }
     }),
+    $fetch(`/api/${type.value}/reviews`, {
+      params: {
+        id: route.params.id
+      }
+    }),
     $fetch(`/api/${type.value}/similar`, {
       params: {
         id: route.params.id
@@ -166,7 +209,7 @@ const { data } = await useAsyncData(`media:${route.params.id}`, async () => {
     })
   ])
 
-  return { media, casts, images, similar }
+  return { media, casts, images, reviews, similar }
 })
 
 if (!data.value) {
@@ -229,6 +272,14 @@ const casts = computed(() => {
 
 const images = computed(() => {
   return data.value?.images
+})
+
+const reviews = computed(() => {
+  return data.value?.reviews
+})
+
+const formattedReviews = computed(() => {
+  return showAllReviews.value ? reviews.value : reviews.value?.slice(0, 8)
 })
 
 const similarMedias = computed(() => {

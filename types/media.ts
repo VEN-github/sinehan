@@ -52,3 +52,19 @@ export type Photo = {
   large?: string
   original?: string
 }
+
+export type AuthorDetails = {
+  name: string
+  username: string
+  avatar_path: string
+  rating: number
+}
+
+export type Review = {
+  readonly id: string
+  author: string
+  author_details: AuthorDetails
+  content: string
+  created_at: string
+  url: string
+}
