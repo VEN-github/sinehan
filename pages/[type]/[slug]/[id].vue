@@ -95,18 +95,9 @@
         </div>
         <div class="mt-24">
           <BaseContainer>
-            <div class="flex items-center justify-between">
-              <h2 class="text-sm font-semibold xs:text-lg sm:text-2xl xl:text-3xl 2xl:text-4xl">
-                Reviews
-              </h2>
-              <button
-                type="button"
-                class="inline-flex items-center gap-2 text-sm font-medium text-custom-primary transition-colors hover:text-custom-primary/90 xs:text-lg"
-              >
-                <IconMessageSquareDiff stroke-width="1.5" :size="20" />
-                <span>Write a Review</span>
-              </button>
-            </div>
+            <h2 class="text-sm font-semibold xs:text-lg sm:text-2xl xl:text-3xl 2xl:text-4xl">
+              Reviews
+            </h2>
             <template v-if="reviews?.length">
               <div
                 class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
@@ -124,9 +115,7 @@
             </template>
             <div v-else class="mt-8 flex flex-col items-center justify-center py-16 text-center">
               <IconArchiveX :size="48" class="text-custom-primary" />
-              <p class="mt-5 text-center text-xl font-medium tracking-tight">
-                No reviews yet. Be the first to write one.
-              </p>
+              <p class="mt-5 text-center text-xl font-medium tracking-tight">No reviews yet</p>
             </div>
           </BaseContainer>
         </div>

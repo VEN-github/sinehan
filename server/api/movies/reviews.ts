@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
               medium: `${PROFILE_URL.medium}${item.author_details.avatar_path}`
             }
           : {
-              medium: DEFAULT_POSTER_URL.medium,
+              small: DEFAULT_POSTER_URL.medium,
               large: DEFAULT_POSTER_URL.large
             },
         rating: item.author_details.rating

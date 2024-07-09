@@ -56,7 +56,7 @@ export type Photo = {
 export type AuthorDetails = {
   name: string
   username: string
-  avatar_path: string
+  avatar_path: Photo
   rating: number
 }
 
