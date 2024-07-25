@@ -17,7 +17,7 @@
       <div v-if="showPagination" class="mb-8 mt-16 flex justify-center">
         <Pagination
           v-model:page="page"
-          :total="500"
+          :total="5000"
           :show-edges="showPaginationEdges"
           :sibling-count="1"
           :default-page="1"
