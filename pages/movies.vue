@@ -1,13 +1,13 @@
 <template>
   <section>
     <ClientOnly fallback-tag="div">
-      <div v-if="pending" class="grid h-svh place-items-center">
+      <div v-if="status === 'pending'" class="grid h-svh place-items-center">
         <IconLoaderCircle class="animate-spin text-custom-primary" :size="64" />
       </div>
       <Media
         v-else
         :medias="movies?.results"
-        :genres="genres"
+        :genres="genresResult?.genres"
         :selected-genres="selectedGenres"
         @handle-filter="selectGenre"
         @remove-filter="removeGenre"
@@ -74,36 +74,27 @@ watch(page, () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 })
 
-const { data, pending } = await useAsyncData(
+const { data: movies, status } = await useAsyncData(
   'movies',
-  async () => {
-    const [movies, genres] = await Promise.all([
-      $fetch<APIResponse<Movie[]>>('/api/movies/discover', {
-        params: {
-          page: page.value
-        }
-      }),
-      $fetch<{ genres: Genre[] }>('/api/genres/movie')
-    ])
-
-    return { movies, genres }
+  () => {
+    return $fetch<APIResponse<Movie[]>>('/api/movies/discover', {
+      params: {
+        page: page.value
+      }
+    })
   },
   {
     watch: [page]
   }
 )
 
-if (!data.value) {
+const { data: genresResult } = await useAsyncData('genres', () => {
+  return $fetch<{ genres: Genre[] }>('/api/genres/movie')
+})
+
+if (!movies.value) {
   throw createError({ statusCode: 404, statusMessage: 'Not Found' })
 }
-
-const movies = computed(() => {
-  return data.value?.movies
-})
-
-const genres = computed(() => {
-  return data.value?.genres.genres
-})
 
 onMounted(() => {
   handleResize()

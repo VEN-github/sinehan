@@ -4,13 +4,13 @@ export default function useSlug(media: Movie | TV) {
   if ('title' in media) {
     const slugTitle = slugify(media.title)
 
-    return `movie/${slugTitle}`
+    return slugTitle ? `movie/${slugTitle}` : 'movie'
   }
 
   if ('name' in media) {
     const slugName = slugify(media.name)
 
-    return `tv-show/${slugName}`
+    return slugName ? `tv-show/${slugName}` : 'tv-show'
   }
 
   return ''
