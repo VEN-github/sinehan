@@ -1,10 +1,10 @@
 <template>
-  <div class="flex items-center gap-x-2 md:gap-x-4">
+  <div class="flex items-center gap-x-4">
     <Dialog v-model:open="open">
       <DialogTrigger as-child>
         <button type="button" class="flex items-center gap-x-2">
           <IconSearch :size="18" stroke-width="1.5" />
-          <p class="hidden text-sm md:block">
+          <p class="text-sm">
             Search
             <kbd
               class="font-mono pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 text-[10px] font-medium opacity-100"
@@ -61,10 +61,10 @@
         </div>
       </DialogContent>
     </Dialog>
-    <Separator orientation="vertical" class="hidden !h-5 lg:block" />
-    <ClientOnly fallback-tag="span" fallback="Loading...">
+    <!-- <Separator orientation="vertical" class="hidden !h-5 lg:block" /> -->
+    <!-- <ClientOnly fallback-tag="span" fallback="Loading...">
       <BaseAvatar />
-    </ClientOnly>
+    </ClientOnly> -->
     <MenuButton @toggle-menu="emit('toggleMenu')" />
   </div>
 </template>

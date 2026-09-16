@@ -46,7 +46,7 @@ export default defineNuxtConfig({
         },
         { rel: 'manifest', href: '/site.webmanifest' },
         {
-          rel: 'mask-icon',
+          rel: 'mask-icon' as never,
           href: '/safari-pinned-tab.svg',
           color: '#a7a9be'
         }
@@ -85,12 +85,25 @@ export default defineNuxtConfig({
           content: 'summary'
         },
         {
+          name: 'twitter:title',
+          content: 'Sinehan'
+        },
+        {
+          name: 'twitter:description',
+          content:
+            'Explore our app: your exclusive portal to movie magic, packed with ratings, reviews, and all the film info you crave. Elevate your movie experience!'
+        },
+        {
+          name: 'twitter:image',
+          content: '/og-image.jpg'
+        },
+        {
           name: 'robots',
           content: 'index, follow'
         }
       ]
-    },
-    pageTransition: { name: 'page', mode: 'out-in' }
+    }
+    // pageTransition: { name: 'page', mode: 'out-in' }
   },
   vuefire: {
     auth: {

@@ -6,6 +6,9 @@
       <Meta property="og:title" :content="title" />
       <Meta property="og:description" :content="description" />
       <Meta property="og:image" :content="media?.backdrop_path.large" />
+      <Meta name="twitter:title" :content="title" />
+      <Meta name="twitter:description" :content="description" />
+      <Meta name="twitter:image" :content="media?.backdrop_path.large" />
     </Head>
     <ClientOnly fallback-tag="div">
       <div
@@ -157,7 +160,7 @@ const isPlaying = ref<boolean>(false)
 const showAllReviews = ref<boolean>(false)
 let timeout: ReturnType<typeof setTimeout>
 
-const myListCollection = useCollection(collection(db, 'my-list'))
+const myListCollection = import.meta.client ? useCollection(collection(db, 'my-list')) : ref([])
 
 const type = computed<string>(() => {
   if (route.params.type === 'movie') {
