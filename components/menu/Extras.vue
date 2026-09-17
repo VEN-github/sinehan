@@ -7,7 +7,7 @@
           <p class="text-sm">
             Search
             <kbd
-              class="font-mono pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 text-[10px] font-medium opacity-100"
+              class="font-mono pointer-events-none hidden h-5 select-none rounded border px-1.5 text-[10px] font-medium opacity-100 lg:inline-flex lg:items-center lg:gap-1"
             >
               <span class="text-xs">CTRL</span>K
             </kbd>
