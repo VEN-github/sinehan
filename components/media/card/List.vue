@@ -34,10 +34,17 @@
         <button
           type="button"
           class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors hover:text-custom-primary"
+          @click="addToMyList"
         >
-          <IconPlusCircle stroke-width="1.5" :size="16" /><span>My List</span>
+          <IconCheckCircle v-if="isOnMyList" stroke-width="1.5" :size="16" />
+          <IconPlusCircle v-else stroke-width="1.5" :size="16" />
+          <span>My List</span>
         </button>
-        <Button size="sm" class="rounded-full bg-custom-primary hover:bg-custom-primary/90" as-child>
+        <Button
+          size="sm"
+          class="rounded-full bg-custom-primary hover:bg-custom-primary/90"
+          as-child
+        >
           <NuxtLink :to="`/${slug}/${media.id}?play=1`">
             <IconPlayCircle stroke-width="1.5" :size="16" />
             <span class="pl-2 font-medium">Watch Now</span>
@@ -49,6 +56,9 @@
 </template>
 
 <script setup lang="ts">
+import { useFirestore } from 'vuefire'
+import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore'
+import { useToast } from '@/components/ui/toast/use-toast'
 import type { Movie, TV } from '~/types/media'
 
 const props = defineProps({
@@ -58,10 +68,41 @@ const props = defineProps({
   }
 })
 
+const db = useFirestore()
+const { toast } = useToast()
+const myListCollection = import.meta.client ? useCollection(collection(db, 'my-list')) : ref([])
 const slug = useSlug(props.media)
 const title = useTitle(props.media)
 const releaseDate = useReleaseDate(props.media)
 const rating = useRating(props.media)
+
+const isOnMyList = computed(() => {
+  if (myListCollection.value) {
+    return myListCollection.value?.find(doc => doc.media_id == props.media?.id)
+  }
+  return false
+})
+
+async function addToMyList() {
+  if (isOnMyList.value) {
+    await deleteDoc(doc(db, 'my-list', isOnMyList.value?.id))
+    toast({
+      description: 'Removed from My List'
+    })
+    return
+  }
+
+  const newDoc = await addDoc(collection(db, 'my-list'), {
+    media_id: props.media?.id.toString(),
+    ...props.media
+  })
+
+  if (newDoc.id) {
+    toast({
+      description: 'Added to My List'
+    })
+  }
+}
 
 function onNavigate() {
   navigateTo({ path: `/${slug}/${props.media.id}` })

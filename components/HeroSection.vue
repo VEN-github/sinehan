@@ -66,7 +66,7 @@ const props = defineProps({
 
 const db = useFirestore()
 const { toast } = useToast()
-const myListCollection = useCollection(collection(db, 'my-list'))
+const myListCollection = import.meta.client ? useCollection(collection(db, 'my-list')) : ref([])
 const slug = useSlug(props.media)
 const title = useTitle(props.media)
 const releaseDate = useReleaseDate(props.media)
