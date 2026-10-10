@@ -127,6 +127,9 @@ export default defineNuxtConfig({
       vidSrcUrl: process.env.VID_SRC_URL
     }
   },
+  routeRules: {
+    '/api/**': { swr: 300 }
+  },
   lucide: {
     namePrefix: 'Icon'
   }
