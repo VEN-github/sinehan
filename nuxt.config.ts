@@ -128,7 +128,9 @@ export default defineNuxtConfig({
     }
   },
   routeRules: {
-    '/api/**': { swr: 300 }
+    '/api/genres/**': { swr: 300 },
+    '/api/movies/**': { swr: 300 },
+    '/api/tv/**': { swr: 300 }
   },
   lucide: {
     namePrefix: 'Icon'
