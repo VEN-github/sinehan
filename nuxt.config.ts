@@ -128,9 +128,11 @@ export default defineNuxtConfig({
     }
   },
   routeRules: {
-    '/': { swr: 300 },
-    '/movies': { swr: 3600 },
-    '/tv-shows': { swr: 3600 }
+    '/': { isr: 300 },
+    '/movies': { isr: 3600 },
+    '/movie/**': { isr: 3600 },
+    '/tv-shows': { isr: 3600 },
+    '/tv-show/**': { isr: 3600 }
   },
   lucide: {
     namePrefix: 'Icon'
