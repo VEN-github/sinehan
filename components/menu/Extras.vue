@@ -34,7 +34,7 @@
           </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div v-if="search" class="border-t border-t-custom-secondary py-2">
+        <div v-if="normalizedSearch" class="border-t border-t-custom-secondary py-2">
           <div v-if="pending" class="grid h-[10vh] place-items-center">
             <IconLoaderCircle class="animate-spin text-custom-primary" :size="52" />
           </div>
@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMagicKeys } from '@vueuse/core'
+import { refDebounced, useMagicKeys } from '@vueuse/core'
 import type { APIResponse } from '~/types/api'
 import type { Movie, TV } from '~/types/media'
 
@@ -78,6 +78,7 @@ const emit = defineEmits(['toggleMenu'])
 
 const open = ref<boolean>(false)
 const search = ref<string>('')
+const debouncedSearch = refDebounced(search, 350)
 
 const { Meta_K, Ctrl_K } = useMagicKeys({
   passive: false,
@@ -85,6 +86,8 @@ const { Meta_K, Ctrl_K } = useMagicKeys({
     if (e.key === 'k' && (e.metaKey || e.ctrlKey)) e.preventDefault()
   }
 })
+
+const normalizedSearch = computed(() => debouncedSearch.value.trim())
 
 watch([Meta_K, Ctrl_K], (v) => {
   if (!(v[0] || v[1])) handleOpenChange()
@@ -99,15 +102,25 @@ function handleOpenChange() {
 }
 
 const { data: searchResults, pending } = await useAsyncData(
-  `search:${search.value}`,
-  () =>
-    $fetch<APIResponse<(Movie | TV)[]>>('/api/search', {
+  'search',
+  () => {
+    if (normalizedSearch.value.length < 2) {
+      return Promise.resolve({
+        page: 1,
+        results: [],
+        total_pages: 0,
+        total_results: '0'
+      } as APIResponse<(Movie | TV)[]>)
+    }
+
+    return $fetch<APIResponse<(Movie | TV)[]>>('/api/search', {
       params: {
-        search: search.value
+        search: normalizedSearch.value
       }
-    }),
+    })
+  },
   {
-    watch: [search]
+    watch: [normalizedSearch]
   }
 )
 </script>

@@ -105,10 +105,6 @@
             </Button>
           </div>
         </form>
-        <div class="mt-4 text-center text-sm text-custom-bg">
-          Already have an account?
-          <NuxtLink to="/login" class="underline"> Sign in </NuxtLink>
-        </div>
       </CardContent>
     </Card>
   </div>

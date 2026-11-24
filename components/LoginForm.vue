@@ -6,7 +6,7 @@
     <AppLogo class="z-10 mx-auto mb-5" />
     <Card class="z-10 mx-auto max-w-sm bg-custom-foreground">
       <CardHeader>
-        <CardTitle class="text-2xl text-custom-bg"> Login </CardTitle>
+        <CardTitle class="text-2xl text-custom-bg">Login</CardTitle>
         <CardDescription class="text-custom-bg">
           Enter your email below to login to your account
         </CardDescription>
@@ -42,12 +42,7 @@
               />
             </div>
             <div class="grid gap-2">
-              <div class="flex items-center">
-                <Label for="password" class="text-custom-bg">Password</Label>
-                <!-- <a href="#" class="ml-auto inline-block text-sm text-custom-bg underline">
-                  Forgot password?
-                </a> -->
-              </div>
+              <Label for="password" class="text-custom-bg">Password</Label>
               <div class="relative w-full">
                 <Input
                   id="password"
@@ -80,10 +75,6 @@
           This website is for demo purposes only. <br />
           Not for commercial use.
         </div>
-        <!-- <div class="mt-4 text-center text-sm text-custom-bg">
-          Don't have an account?
-          <NuxtLink to="/sign-up" class="underline"> Sign up </NuxtLink>
-        </div> -->
       </CardContent>
     </Card>
   </div>
@@ -92,14 +83,6 @@
 <script setup lang="ts">
 import { FirebaseError } from 'firebase/app'
 import { signInWithEmailAndPassword, type Auth } from 'firebase/auth'
-
-definePageMeta({
-  layout: false
-})
-
-useHead({
-  title: 'Login'
-})
 
 const auth = useFirebaseAuth() as Auth
 const router = useRouter()

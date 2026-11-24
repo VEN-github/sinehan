@@ -172,7 +172,7 @@ const type = computed<string>(() => {
   }
 })
 
-const { data } = await useAsyncData(`media:${route.params.id}`, async () => {
+const { data } = await useAsyncData(`media:${type.value}:${route.params.id}`, async () => {
   const [media, casts, images, reviews, similar] = await Promise.all([
     $fetch<Movie | TV>(`/api/${type.value}/details`, {
       params: {
